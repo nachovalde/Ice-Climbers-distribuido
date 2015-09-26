@@ -134,6 +134,9 @@ public class MainThread extends Thread {
                         levelsDown = true;
                     }
                 }
+                if(tablero.p1.collideWithPlayer(tablero.p2)){                	
+                	System.out.println("Colisionaron");
+                }
             }
 
             // Update board

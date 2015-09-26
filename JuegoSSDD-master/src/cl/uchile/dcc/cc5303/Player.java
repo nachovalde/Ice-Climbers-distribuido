@@ -48,8 +48,24 @@ public class Player {
     public boolean collide(Bench b){
         return Math.abs(bottom() - b.top()) < 5 && right() <= b.right() && left() >= b.left();
     }
+    
+    public boolean collideWithPlayer(Player p){
+    	return (isBetweenLR(p.left()) || isBetweenLR(p.right())) && (isBetweenTB(p.bottom()) || (isBetweenTB(p.top())));
+    }
 
-    public boolean hit(Bench b){
+	private boolean isBetweenLR(int candidate) {
+		return isBetween(this.left(), this.right(), candidate);
+	}
+
+	private boolean isBetweenTB(int candidate) {
+		return isBetween(this.top(), this.bottom(), candidate);
+	}
+
+	private boolean isBetween(int min, int max, int candidate) {
+		return candidate>=min && candidate<=max;
+	}
+
+	public boolean hit(Bench b){
         return Math.abs(top() - b.bottom()) < 5 && right() <= b.right() && left() >= b.left();
     }
 
