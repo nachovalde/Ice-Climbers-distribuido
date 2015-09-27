@@ -61,6 +61,8 @@ public class Board extends Canvas {
         for(Bench base: bases) {
             base.levelDown(levels);
         }
+        p1.levelDown();
+        p2.levelDown();
     }
 
 

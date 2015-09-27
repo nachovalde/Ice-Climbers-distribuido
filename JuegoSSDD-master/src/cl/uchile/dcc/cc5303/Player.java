@@ -84,4 +84,8 @@ public class Player {
     public int right() {
         return this.posX + this.w;
     }
+
+	public void levelDown() {
+		this.posY += 100;
+	}
 }
