@@ -45,10 +45,10 @@ public class MainThread extends Thread {
 
     public MainThread() {
         keys = new boolean[KeyEvent.KEY_LAST];
-
+        int N = 5;
         //Jugadores
-        player1 = new Player(WIDTH/3, 550);
-        player2 = new Player(2*WIDTH/3, 550);
+        player1 = new Player(WIDTH/3, 550, N);
+        player2 = new Player(2*WIDTH/3, 550, N);
 
         //resumen
         System.out.println(tablero);
@@ -143,7 +143,17 @@ public class MainThread extends Thread {
             if (levelsDown) {
                 tablero.levelsDown();
             }
-
+            
+            //revisar muerte de algún jugador
+            if( tablero.playerDie())
+            {
+            	System.out.println("Se termino el Juego");
+            	frame.dispose();
+            	break;
+            }
+            
+            	
+            
             tablero.repaint();
 
             try {

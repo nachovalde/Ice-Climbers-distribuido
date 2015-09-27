@@ -7,13 +7,14 @@ import java.awt.*;
  */
 public class Player {
 
-    int posX, posY, w = 7, h = 10;
+    int posX, posY, w = 7, h = 10, vida;
     double speed = 0.4;
     public boolean standUp = false;
 
-    public Player(int x, int y){
+    public Player(int x, int y, int vida){
         this.posX = x;
         this.posY = y;
+        this.vida = vida;
     }
 
     public void jump(){
@@ -106,4 +107,28 @@ public class Player {
     private void reboundingRight() {
         this.posX +=20;
     }
+    public void quitarVida(){
+    	this.vida--;
+    }
+
+	public boolean loseLife(int i) {
+		if(this.posY > i)
+		{
+			System.out.println("perdi");
+			quitarVida();
+			return true;
+		}
+		return false;
+		
+	}
+
+	public boolean stillLife() {
+		return this.vida > 0;
+	}
+
+	public void reubicar(int new_posX, int new_posY) {
+		this.posX = new_posX;
+		this.posY = new_posY;
+	}
+
 }

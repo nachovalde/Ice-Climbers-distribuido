@@ -65,6 +65,42 @@ public class Board extends Canvas {
         p2.levelDown();
     }
 
+	public boolean playerDie() {
+		//mejorar busqueda de bases de lvl 0
+		Bench aux = null;
+		for (int i = 0; i < bases.length; i++) {
+			if(bases[i].level == 0)
+			{
+				aux = bases[i];
+				break;
+			}
+		}
+		
+		if( p1.loseLife(height) )
+		{
+			if( Math.abs(p1.posX - aux.posX) < Math.abs(p1.posX - (aux.posX+aux.w) ) )
+			{
+				p1.reubicar(aux.posX + 2, aux.posY - 20);
+			}else
+			{
+				p1.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
+			}
+		}
+		
+		if( p2.loseLife(height) )
+		{
+			if( Math.abs(p2.posX - aux.posX) < Math.abs(p2.posX - (aux.posX + aux.w)) )
+			{
+				p2.reubicar(aux.posX + 2, aux.posY - 20);
+			}else
+			{
+				p2.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
+			}
+		}
+		return !(p1.stillLife() &&  p2.stillLife());
+		
+	}
+
 
 
 
