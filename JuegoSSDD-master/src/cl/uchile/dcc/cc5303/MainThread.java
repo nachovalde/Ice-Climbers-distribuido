@@ -1,6 +1,7 @@
 package cl.uchile.dcc.cc5303;
 
 import javax.swing.*;
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
@@ -47,8 +48,8 @@ public class MainThread extends Thread {
         keys = new boolean[KeyEvent.KEY_LAST];
         int N = 5;
         //Jugadores
-        player1 = new Player(WIDTH/3, 550, N);
-        player2 = new Player(2*WIDTH/3, 550, N);
+        player1 = new Player(WIDTH/3, 550, N, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT);
+        player2 = new Player(2*WIDTH/3, 550, N, KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_A);
 
         //resumen
         System.out.println(tablero);
@@ -58,8 +59,8 @@ public class MainThread extends Thread {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         tablero = new Board(WIDTH, HEIGHT);
-        tablero.p1 = player1;
-        tablero.p2 = player2;
+        tablero.addPlayer(player1);
+        tablero.addPlayer(player2);
         tablero.bases = benches;
 
         frame.add(tablero);
@@ -87,54 +88,41 @@ public class MainThread extends Thread {
     public void run() {
         while (true) { // Main loop
             //Check controls
-            if (keys[KeyEvent.VK_UP]) {
-                tablero.p1.jump();
-            }
-            if (keys[KeyEvent.VK_RIGHT]) {
-                tablero.p1.moveRight();
-            }
-            if (keys[KeyEvent.VK_LEFT]) {
-                tablero.p1.moveLeft();
-            }
+        	for(Player p : tablero.players){
+	            if (keys[p.ButtonUp]) {
+	                p.jump();
+	            }
+	            if (keys[p.ButtonRight]) {
+	                p.moveRight();
+	            }
+	            if (keys[p.ButtonLeft]) {
+	                p.moveLeft();
+	            }
+        	}
 
-            if (keys[KeyEvent.VK_W]) {
-                tablero.p2.jump();
-            }
-            if (keys[KeyEvent.VK_D]) {
-                tablero.p2.moveRight();
-            }
-            if (keys[KeyEvent.VK_A]) {
-                tablero.p2.moveLeft();
-            }
-
+            
             //update players
-            tablero.p1.update(DX);
-            tablero.p2.update(DX);
+            for(Player p : tablero.players){
+            	p.update(DX);
+            }
 
             //update barras
             boolean levelsDown = false;
             for (Bench barra : tablero.bases) {
-                if (tablero.p1.hit(barra))
-                    tablero.p1.speed = 0.8;
-                else if (tablero.p1.collide(barra)) {
-                    tablero.p1.speed = 0.01;
-                    tablero.p1.standUp = true;
-                    if (barra.getLevel() > 2){
-                        levelsDown = true;
-                    }
-                }
-
-                if (tablero.p2.hit(barra))
-                    tablero.p2.speed = 0.8;
-                else if (tablero.p2.collide(barra)) {
-                    tablero.p2.speed = 0.01;
-                    tablero.p2.standUp = true;
-                    if (barra.getLevel() > 2){
-                        levelsDown = true;
-                    }
-                }
-                if(tablero.p1.collideWithPlayer(tablero.p2)){                	
-                	tablero.p1.rebounding(barra, tablero.p2);
+            	for(Player p : tablero.players){
+	                if (p.hit(barra))
+	                    p.speed = 0.8;
+	                else if (p.collide(barra)) {
+	                    p.speed = 0.01;
+	                    p.standUp = true;
+	                    if (barra.getLevel() > 2){
+	                        levelsDown = true;
+	                    }
+	                }
+            	}
+            	// Arreglar hardcode
+                if(tablero.players.get(0).collideWithPlayer(tablero.players.get(1))){                	
+                	tablero.players.get(0).rebounding(barra, tablero.players.get(1));
 
                 }
             }

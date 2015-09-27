@@ -8,13 +8,17 @@ import java.awt.*;
 public class Player {
 
     int posX, posY, w = 7, h = 10, vida;
+    int ButtonUp, ButtonRight, ButtonLeft;
     double speed = 0.4;
     public boolean standUp = false;
 
-    public Player(int x, int y, int vida){
+    public Player(int x, int y, int vida, int ButtonUP, int ButtonRight, int ButtonLeft){
         this.posX = x;
         this.posY = y;
         this.vida = vida;
+        this.ButtonUp = ButtonUP;
+        this.ButtonRight = ButtonRight;
+        this.ButtonLeft = ButtonLeft;
     }
 
     public void jump(){

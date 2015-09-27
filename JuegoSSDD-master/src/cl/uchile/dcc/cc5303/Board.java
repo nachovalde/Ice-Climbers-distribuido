@@ -1,6 +1,7 @@
 package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by sebablasko on 9/11/15.
@@ -9,7 +10,7 @@ public class Board extends Canvas {
 
     public int width, height;
 
-    public Player p1, p2;
+    public ArrayList<Player> players;
     public Bench[] bases;
     public Image img;
     public Graphics buffer;
@@ -18,6 +19,7 @@ public class Board extends Canvas {
     public Board(int w, int h){
         this.width = w;
         this.height = h;
+        players = new ArrayList<Player>();
     }
 
     @Override
@@ -32,11 +34,12 @@ public class Board extends Canvas {
 
         buffer.setColor(Color.black);
         buffer.fillRect(0, 0, getWidth(), getHeight());;
-
+        
+        //Arreglar hardcode
         buffer.setColor(Color.red);
-        p1.draw(buffer);
+        players.get(0).draw(buffer);
         buffer.setColor(Color.blue);
-        p2.draw(buffer);
+        players.get(1).draw(buffer);
 
         buffer.setColor(Color.white);
         for(Bench base : bases){
@@ -49,7 +52,8 @@ public class Board extends Canvas {
     @Override
     public String toString(){
         String ret = "Tablero: dimensions " + this.width + "x" + this.height + "\n";
-        ret += p1.toString() + "\n" + p2.toString();
+        //Arreglar hardcode
+        ret += players.get(0).toString() + "\n" + players.get(1).toString();
         return ret;
     }
 
@@ -61,8 +65,9 @@ public class Board extends Canvas {
         for(Bench base: bases) {
             base.levelDown(levels);
         }
-        p1.levelDown();
-        p2.levelDown();
+        for(Player p : players ){
+        	p.levelDown();
+        }
     }
 
 	public boolean playerDie() {
@@ -76,29 +81,29 @@ public class Board extends Canvas {
 			}
 		}
 		
-		if( p1.loseLife(height) )
-		{
-			if( Math.abs(p1.posX - aux.posX) < Math.abs(p1.posX - (aux.posX+aux.w) ) )
+		for(Player p : players){
+			if( p.loseLife(height) )
 			{
-				p1.reubicar(aux.posX + 2, aux.posY - 20);
-			}else
-			{
-				p1.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
+				if( Math.abs(p.posX - aux.posX) < Math.abs(p.posX - (aux.posX+aux.w) ) )
+				{
+					p.reubicar(aux.posX + 2, aux.posY - 20);
+				}else
+				{
+					p.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
+				}
 			}
 		}
-		
-		if( p2.loseLife(height) )
-		{
-			if( Math.abs(p2.posX - aux.posX) < Math.abs(p2.posX - (aux.posX + aux.w)) )
-			{
-				p2.reubicar(aux.posX + 2, aux.posY - 20);
-			}else
-			{
-				p2.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
-			}
+		boolean res = true;
+		for(Player p: players){
+			res = res && p.stillLife();
 		}
-		return !(p1.stillLife() &&  p2.stillLife());
+		//Arreglar: se termina si un solo jugador perdio
+		return !res;
 		
+	}
+
+	public void addPlayer(Player player) {
+		players.add(player);
 	}
 
 
