@@ -3,8 +3,6 @@ package cl.uchile.dcc.cc5303;
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -27,7 +25,8 @@ public class MainThread extends Thread {
     int frames = new Random().nextInt(2 * framesToNewBench);
 
     private Bench[] benches = {
-            new Bench(0, 800, 0),
+            new Bench(200, 200, 0),
+            new Bench(450, 200, 0),
             new Bench(100, 200, 1),
             new Bench(400, 200, 1),
             new Bench(300, 100, 2),

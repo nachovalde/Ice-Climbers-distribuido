@@ -1,8 +1,6 @@
 package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sebablasko on 9/11/15.
@@ -15,6 +13,7 @@ public class Board extends Canvas {
     public Bench[] bases;
     public Image img;
     public Graphics buffer;
+    public int levels = 11;
 
     public Board(int w, int h){
         this.width = w;
@@ -60,7 +59,7 @@ public class Board extends Canvas {
 
     public void levelsDown() {
         for(Bench base: bases) {
-            base.levelDown();
+            base.levelDown(levels);
         }
     }
 

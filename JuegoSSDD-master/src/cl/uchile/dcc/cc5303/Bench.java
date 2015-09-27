@@ -1,7 +1,6 @@
 package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * Created by sebablasko on 9/11/15.
@@ -41,8 +40,8 @@ public class Bench {
         return this.posX + this.w;
     }
 
-    public void levelDown() {
-        this.level--;
+    public void levelDown(int levels) {
+        this.level = (this.level + levels-1)%levels;
         this.posY = 600 - level*100 - this.h;
     }
 
