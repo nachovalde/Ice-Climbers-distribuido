@@ -134,7 +134,8 @@ public class MainThread extends Thread {
                     }
                 }
                 if(tablero.p1.collideWithPlayer(tablero.p2)){                	
-                	System.out.println("Colisionaron");
+                	tablero.p1.rebounding(barra, tablero.p2);
+
                 }
             }
 

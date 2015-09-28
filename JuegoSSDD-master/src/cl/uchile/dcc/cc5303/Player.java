@@ -88,4 +88,22 @@ public class Player {
 	public void levelDown() {
 		this.posY += 100;
 	}
+
+    public void reboundingLeft(){
+        this.posX -= 20;
+    }
+
+    public void rebounding(Bench bench, Player player){
+        if (this.left()<player.left()) {
+            this.reboundingLeft();
+            player.reboundingRight();
+        }else{
+            player.reboundingLeft();
+            this.reboundingRight();
+        }
+    }
+
+    private void reboundingRight() {
+        this.posX +=20;
+    }
 }
