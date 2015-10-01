@@ -63,6 +63,7 @@ public class MainThread extends Thread {
         tablero.addPlayer(player2);
         tablero.bases = benches;
 
+
         frame.add(tablero);
         tablero.setSize(WIDTH, HEIGHT);
 
@@ -99,20 +100,20 @@ public class MainThread extends Thread {
 	                p.moveLeft();
 	            }
         	}
-
-            
             //update players
             for(Player p : tablero.players){
             	p.update(DX);
             }
-
             //update barras
             boolean levelsDown = false;
             for (Bench barra : tablero.bases) {
             	for(Player p : tablero.players){
-	                if (p.hit(barra))
-	                    p.speed = 0.8;
-	                else if (p.collide(barra)) {
+	                if (p.hit(barra)) {
+                        p.speed = 0.8;
+                    }else if (p.collide(barra)) {
+                        if (p.collideUpper(barra)){
+                            p.score++;
+                        }
 	                    p.speed = 0.01;
 	                    p.standUp = true;
 	                    if (barra.getLevel() > 2){
@@ -120,11 +121,7 @@ public class MainThread extends Thread {
 	                    }
 	                }
             	}
-            	// Arreglar hardcode
-                if(tablero.players.get(0).collideWithPlayer(tablero.players.get(1))){                	
-                	tablero.players.get(0).rebounding(barra, tablero.players.get(1));
-
-                }
+                tablero.checkCollisionAllPlayers();
             }
 
             // Update board
@@ -132,16 +129,16 @@ public class MainThread extends Thread {
                 tablero.levelsDown();
             }
             
-            //revisar muerte de algún jugador
+            //revisar muerte de algï¿½n jugador
             if( tablero.playerDie())
             {
             	System.out.println("Se termino el Juego");
+                for (Player p : tablero.players){
+                    System.out.println(p.getScore());
+                }
             	frame.dispose();
             	break;
             }
-            
-            	
-            
             tablero.repaint();
 
             try {

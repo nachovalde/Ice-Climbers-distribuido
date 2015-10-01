@@ -7,7 +7,7 @@ import java.awt.*;
  */
 public class Player {
 
-    int posX, posY, w = 7, h = 10, vida;
+    int posX, posY, w = 7, h = 10, vida, score;
     int ButtonUp, ButtonRight, ButtonLeft;
     double speed = 0.4;
     public boolean standUp = false;
@@ -16,6 +16,7 @@ public class Player {
         this.posX = x;
         this.posY = y;
         this.vida = vida;
+        this.score=0;
         this.ButtonUp = ButtonUP;
         this.ButtonRight = ButtonRight;
         this.ButtonLeft = ButtonLeft;
@@ -98,7 +99,7 @@ public class Player {
         this.posX -= 20;
     }
 
-    public void rebounding(Bench bench, Player player){
+    public void rebounding(Player player){
         if (this.left()<player.left()) {
             this.reboundingLeft();
             player.reboundingRight();
@@ -120,10 +121,10 @@ public class Player {
 		{
 			System.out.println("perdi");
 			quitarVida();
+            this.score=this.score-5;
 			return true;
 		}
 		return false;
-		
 	}
 
 	public boolean stillLife() {
@@ -134,5 +135,15 @@ public class Player {
 		this.posX = new_posX;
 		this.posY = new_posY;
 	}
+    public boolean collideUpper(Bench bench){
+        if (bench.top()>this.bottom()){
+            return true;
+        }
+        return false;
+    }
+
+    public int getScore() {
+        return score;
+    }
 
 }

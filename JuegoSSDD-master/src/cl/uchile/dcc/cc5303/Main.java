@@ -2,10 +2,7 @@ package cl.uchile.dcc.cc5303;
 
 public class Main {
 
-    //Parametros del Juego
-    static final public int ANCHO = 800;
-    static final public int ALTO = 600;
-
+    public static String urlServer = "rmi://localhost:1099/juego";
     public static void main(String[] args){
         System.out.println("Iniciando Juego de SSDD...");
 

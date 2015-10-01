@@ -1,12 +1,13 @@
 package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
+import java.rmi.Remote;
 import java.util.ArrayList;
 
 /**
  * Created by sebablasko on 9/11/15.
  */
-public class Board extends Canvas {
+public class Board extends Canvas implements Remote {
 
     public int width, height;
 
@@ -102,11 +103,20 @@ public class Board extends Canvas {
 		
 	}
 
-	public void addPlayer(Player player) {
-		players.add(player);
+    public void checkCollisionAllPlayers(){
+        for (Player p : players){
+            this.checkCollision(p,players.indexOf(p));
+        }
+    }
+
+    private void checkCollision(Player p, int i) {
+        for (int j = i; j < players.size(); j++) {
+            if (p.collideWithPlayer(players.get(j))){
+                p.rebounding(players.get(j));
+            }
+        }
+    }
+    public void addPlayer(Player player) {
+        players.add(player);
 	}
-
-
-
-
 }
