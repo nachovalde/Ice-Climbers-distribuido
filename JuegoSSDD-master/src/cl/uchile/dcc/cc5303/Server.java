@@ -23,9 +23,9 @@ public class Server {
 		return "rmi://"+ ip +":" + port + "/bancoServer";
 	}
 	
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		PublicObject po = new PublicObject(5);
 		try {
-            PublicObject po = new PublicObject(1, 1, 1);
 			Naming.rebind(urlServer, (Remote) po);
 			System.out.println("Objeto publicado en "+urlServer);
 		} catch (RemoteException e) {
@@ -35,7 +35,7 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		while(po.players.length()!=2){
+		while(po.players.size()!=2){
 			System.out.println("Esperando jugadores para empezar...");
 			try {
                 Thread.sleep(1000 / 60);
@@ -43,5 +43,9 @@ public class Server {
 
             }
 		}
+		po.ready = true;
+		System.out.println("Iniciando Juego de SSDD...");
+        MainThreadServer m = new MainThreadServer(po);
+        m.start();
 	}	
 }
