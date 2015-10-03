@@ -90,4 +90,7 @@ public class PublicObject {
             }
         }
     }
+    public Player getPlayerbyId(int id){
+        return players.get(id);
+    }
 }
