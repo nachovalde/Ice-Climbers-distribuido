@@ -17,14 +17,14 @@ public class MainThreadClient extends Thread{
     private final static int framesToNewBench = 100;
     
     private int id;
-    private PublicObject objeto;
+    private IPublicObject objeto;
     
     private JFrame frame;
     private Board tablero;
     
     int frames = new Random().nextInt(2 * framesToNewBench);
 
-	public MainThreadClient(PublicObject objeto, int id) throws RemoteException {
+	public MainThreadClient(IPublicObject objeto, int id) throws RemoteException {
 		
 		this.id = id;
 		this.objeto = objeto;
