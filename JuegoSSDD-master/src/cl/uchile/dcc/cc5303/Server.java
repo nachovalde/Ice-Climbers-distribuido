@@ -16,7 +16,7 @@ public class Server {
 	private static String getURL(){
 		String ip = "";
 		try {
-			ip = InetAddress.getLocalHost().toString();
+			ip = InetAddress.getLocalHost().getHostAddress();;
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
