@@ -11,8 +11,9 @@ public class Player {
     int ButtonUp, ButtonRight, ButtonLeft;
     double speed = 0.4;
     public boolean standUp = false;
+	private Color color;
 
-    public Player(int x, int y, int vida, int ButtonUP, int ButtonRight, int ButtonLeft){
+    public Player(int x, int y, int vida, int ButtonUP, int ButtonRight, int ButtonLeft, Color color){
         this.posX = x;
         this.posY = y;
         this.vida = vida;
@@ -20,6 +21,7 @@ public class Player {
         this.ButtonUp = ButtonUP;
         this.ButtonRight = ButtonRight;
         this.ButtonLeft = ButtonLeft;
+        this.color = color;
     }
 
     public void jump(){
@@ -145,5 +147,9 @@ public class Player {
     public int getScore() {
         return score;
     }
+
+	public Color getColor() {
+		return this.color;
+	}
 
 }

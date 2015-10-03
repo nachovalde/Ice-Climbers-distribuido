@@ -2,6 +2,7 @@ package cl.uchile.dcc.cc5303;
 
 import javax.swing.*;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
@@ -48,8 +49,8 @@ public class MainThread extends Thread {
         keys = new boolean[KeyEvent.KEY_LAST];
         int N = 5;
         //Jugadores
-        player1 = new Player(WIDTH/3, 550, N, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT);
-        player2 = new Player(2*WIDTH/3, 550, N, KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_A);
+        player1 = new Player(WIDTH/3, 550, N, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, Color.red);
+        player2 = new Player(2*WIDTH/3, 550, N, KeyEvent.VK_W, KeyEvent.VK_D, KeyEvent.VK_A, Color.green);
 
         //resumen
         System.out.println(tablero);

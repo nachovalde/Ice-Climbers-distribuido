@@ -37,10 +37,10 @@ public class Board extends Canvas implements Remote {
         buffer.fillRect(0, 0, getWidth(), getHeight());;
         
         //Arreglar hardcode
-        buffer.setColor(Color.red);
-        players.get(0).draw(buffer);
-        buffer.setColor(Color.blue);
-        players.get(1).draw(buffer);
+        for(Player p: players){
+	        buffer.setColor(p.getColor());
+	        p.draw(buffer);
+        }
 
         buffer.setColor(Color.white);
         for(Bench base : bases){
