@@ -99,5 +99,9 @@ public class PublicObject {
         for(Player p : players ){
         	p.levelDown();
         }
+	}
+	
+    public Player getPlayerbyId(int id){
+        return players.get(id);
     }
 }
