@@ -74,7 +74,7 @@ public class PublicObject {
         colors.remove(0);
         positions.remove(0);
         players.add(p);
-		return 0;
+		return players.size()-1;
 	}
 
     public void checkCollisionAllPlayers(){
