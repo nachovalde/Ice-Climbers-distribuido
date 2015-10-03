@@ -15,11 +15,7 @@ public class Server {
 	
 	private static String getURL(){
 		String ip = "";
-		try {
-			ip = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
+		ip = "192.170.0.102";//InetAddress.getLocalHost().getHostAddress();
 		return "rmi://"+ ip +":" + port + "/bancoServer";
 	}
 	
