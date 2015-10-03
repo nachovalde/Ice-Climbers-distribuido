@@ -25,7 +25,7 @@ public class Server {
 	
 	public static void main(String[] args) {		
 		try {
-            PublicObject po = new PublicObject(1, 1, 1);
+            PublicObject po = new PublicObject();
 			Naming.rebind(urlServer, (Remote) po);
 			System.out.println("Objeto publicado en "+urlServer);
 		} catch (RemoteException e) {
