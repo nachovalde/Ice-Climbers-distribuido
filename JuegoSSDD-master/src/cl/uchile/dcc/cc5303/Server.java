@@ -26,7 +26,7 @@ public class Server {
 	public static void main(String[] args) throws RemoteException {
 		PublicObject po = new PublicObject(5);
 		try {
-			Naming.rebind(urlServer, (Remote) po);
+			Naming.rebind(urlServer, po);
 			System.out.println("Objeto publicado en "+urlServer);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -35,10 +35,10 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("Esperando jugadores para empezar...");
 		while(po.players.size()!=2){
-			System.out.println("Esperando jugadores para empezar...");
 			try {
-                Thread.sleep(1000 / 60);
+                Thread.sleep(1000/60);
             } catch (InterruptedException ex) {
 
             }
