@@ -11,7 +11,6 @@ public class MainThreadServer extends Thread {
 	
 	@Override
 	public void run(){
-		boolean running = true;
 		while(true){
 			//update barras
             boolean levelsDown = false;
@@ -32,12 +31,18 @@ public class MainThreadServer extends Thread {
             	}
                 po.checkCollisionAllPlayers();
             }
+            
+            // Update board
+            if (levelsDown) {
+                po.levelsDown();
+            }
+            
             boolean finish = true;
             for(Player player : po.players){
             	if(player.stillLife()){
             		finish = false;
             		break;
-            	}            	
+            	}
             }
             if (finish)
             	break;

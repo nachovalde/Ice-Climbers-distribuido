@@ -43,7 +43,7 @@ public class Server {
 
             }
 		}
-		po.ready = true;
+		po.isReady = true;
 		System.out.println("Iniciando Juego de SSDD...");
         MainThreadServer m = new MainThreadServer(po);
         m.start();
