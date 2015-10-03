@@ -43,4 +43,14 @@ public class PublicObject {
         return benches;
     }
 
+	public void isReady() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public int createPlayer() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
