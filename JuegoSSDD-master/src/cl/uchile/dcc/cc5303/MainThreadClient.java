@@ -2,6 +2,7 @@ package cl.uchile.dcc.cc5303;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
 import java.util.Random;
 
 import javax.swing.JFrame;
@@ -23,7 +24,7 @@ public class MainThreadClient extends Thread{
     
     int frames = new Random().nextInt(2 * framesToNewBench);
 
-	public MainThreadClient(PublicObject objeto, int id) {
+	public MainThreadClient(PublicObject objeto, int id) throws RemoteException {
 		
 		this.id = id;
 		this.objeto = objeto;

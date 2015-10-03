@@ -2,12 +2,14 @@ package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 /**
  * Created by luism on 03-10-15.
  */
-public class PublicObject {
+public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     public ArrayList<Player> players;
     public boolean isReady;
     private final static int WIDTH = 800, HEIGHT = 600;
@@ -35,7 +37,7 @@ public class PublicObject {
             new Bench(50, 100, 10)
     };
 
-    public PublicObject(int lifes){
+    public PublicObject(int lifes) throws RemoteException{
         players=new ArrayList<>();
         isReady=false;
         this.lifes=lifes;
@@ -49,25 +51,25 @@ public class PublicObject {
         positions.add(2*WIDTH/3);
     }
 
-    public ArrayList<Player> getPublicPlayers() {
+    public ArrayList<Player> getPublicPlayers() throws RemoteException{
         return players;
     }
 
-    public void setPublicPlayers(ArrayList<Player> publicPlayers) {
+    public void setPublicPlayers(ArrayList<Player> publicPlayers){
         this.players = publicPlayers;
     }
 
-    public Bench[] getPublicBench() {
+    public Bench[] getPublicBench() throws RemoteException{
         return benches;
     }
 
-	public boolean isReady() {
+	public boolean isReady() throws RemoteException{
 		// TODO Auto-generated method stub
         return isReady;
 		
 	}
 
-	public int createPlayer() {
+	public int createPlayer() throws RemoteException{
 		// TODO Auto-generated method stub
         Color color=colors.get(0);
         int position=positions.get(0);
