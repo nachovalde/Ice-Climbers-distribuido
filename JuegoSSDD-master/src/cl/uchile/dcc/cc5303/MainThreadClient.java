@@ -35,7 +35,12 @@ public class MainThreadClient extends Thread{
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         tablero = new Board(WIDTH, HEIGHT);
-        // Agregar jugadores y benches
+        for(Player p: objeto.getPublicPlayers()){
+        	tablero.addPlayer(p);
+        }
+        tablero.bases = objeto.getPublicBench();
+        
+        System.out.println(tablero);
         
         frame.add(tablero);
         tablero.setSize(WIDTH, HEIGHT);
