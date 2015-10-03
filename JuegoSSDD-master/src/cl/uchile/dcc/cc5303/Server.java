@@ -24,7 +24,7 @@ public class Server {
 	}
 	
 	public static void main(String[] args) throws RemoteException {
-		PublicObject po = new PublicObject(5);
+		IPublicObject po = new PublicObject(5);
 		try {
 			Naming.rebind(urlServer, po);
 			System.out.println("Objeto publicado en "+urlServer);
@@ -35,8 +35,9 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Esperando jugadores para empezar...");
-		while(po.players.size()!=2){
+		System.out.println("Esperando jugadores para empezar...");	
+		while(true);
+		/*while(po.players.size()!=2){
 			try {
                 Thread.sleep(1000/60);
             } catch (InterruptedException ex) {
@@ -46,6 +47,6 @@ public class Server {
 		po.isReady = true;
 		System.out.println("Iniciando Juego de SSDD...");
         MainThreadServer m = new MainThreadServer(po);
-        m.start();
+        m.start();*/
 	}	
 }

@@ -10,7 +10,13 @@ import java.util.ArrayList;
  * Created by luism on 03-10-15.
  */
 public class PublicObject extends UnicastRemoteObject implements IPublicObject {
-    public ArrayList<Player> players;
+	
+	
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public ArrayList<Player> players;
     public boolean isReady;
     private final static int WIDTH = 800, HEIGHT = 600;
     private ArrayList<Color> colors;
