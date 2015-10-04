@@ -35,7 +35,7 @@ public class MainThreadClient extends Thread{
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        tablero = new Board(WIDTH, HEIGHT);
+        tablero = new Board(WIDTH, HEIGHT, objeto);
         for(Player p: objeto.getPublicPlayers()){
         	tablero.addPlayer(p);
         }
@@ -66,20 +66,26 @@ public class MainThreadClient extends Thread{
 	
 	@Override
 	public void run() {
-		while(true){
+        Player p= null;
+        while(true){
             try {
-                Player p=objeto.getPlayerbyId(this.id);
-                if (keys[p.ButtonUp]) {
-                    p.jump();
-                }
-                if (keys[p.ButtonRight]) {
-                    p.moveRight();
-                }
-                if (keys[p.ButtonLeft]) {
-                    p.moveLeft();
-                }
-                p.update(DX);
-                System.out.println(p.toString());
+                p = objeto.getPlayerbyId(this.id);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            if (keys[p.ButtonUp]) {
+                p.jump();
+            }
+            if (keys[p.ButtonRight]) {
+                p.moveRight();
+            }
+            if (keys[p.ButtonLeft]) {
+                p.moveLeft();
+            }
+            p.update(DX);
+            try {
+                objeto.updatePlayer(id,p);
+                tablero.setPlayers(objeto.getPlayers());
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

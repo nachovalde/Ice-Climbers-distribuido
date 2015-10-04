@@ -2,6 +2,7 @@ package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 /**
@@ -16,11 +17,13 @@ public class Board extends Canvas implements Remote {
     public Image img;
     public Graphics buffer;
     public int levels = 11;
+    IPublicObject publicObject;
 
-    public Board(int w, int h){
+    public Board(int w, int h, IPublicObject publicObject){
         this.width = w;
         this.height = h;
-        players = new ArrayList<Player>();
+        this.publicObject=publicObject;
+        players=new ArrayList<>();
     }
 
     @Override
@@ -119,4 +122,9 @@ public class Board extends Canvas implements Remote {
     public void addPlayer(Player player) {
         players.add(player);
 	}
+
+    public void setPlayers(ArrayList players){
+        this.players.clear();
+        this.players.addAll(players);
+    }
 }

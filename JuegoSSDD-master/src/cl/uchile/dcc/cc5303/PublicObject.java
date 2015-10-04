@@ -113,7 +113,13 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         return getPlayers().get(id);
     }
 
-	public ArrayList<Player> getPlayers() throws RemoteException{
+    @Override
+    public void updatePlayer(int id, Player p) throws  RemoteException{
+        players.remove(id);
+        players.add(p);
+    }
+
+    public ArrayList<Player> getPlayers() throws RemoteException{
 		return players;
 	}
 

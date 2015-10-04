@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.rmi.RemoteException;
 import java.util.Random;
 
 /**
@@ -54,12 +55,17 @@ public class MainThread extends Thread {
 
         //resumen
         System.out.println(tablero);
-
+        IPublicObject po = null;
+        try {
+            po=new PublicObject(5);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         frame = new JFrame(TITLE);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        tablero = new Board(WIDTH, HEIGHT);
+        tablero = new Board(WIDTH, HEIGHT,po);
         tablero.addPlayer(player1);
         tablero.addPlayer(player2);
         tablero.bases = benches;
