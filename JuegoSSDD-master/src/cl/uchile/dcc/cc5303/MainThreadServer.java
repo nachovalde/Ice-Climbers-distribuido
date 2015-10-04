@@ -41,16 +41,26 @@ public class MainThreadServer extends Thread {
             
             // Update board
             if (levelsDown) {
-                po.levelsDown();
+                try {
+					po.levelsDown();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
             
             boolean finish = true;
-            for(Player player : po.getPlayers()){
-            	if(player.stillLife()){
-            		finish = false;
-            		break;
-            	}
-            }
+            try {
+				for(Player player : po.getPlayers()){
+					if(player.stillLife()){
+						finish = false;
+						break;
+					}
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             if (finish)
             	break;
             

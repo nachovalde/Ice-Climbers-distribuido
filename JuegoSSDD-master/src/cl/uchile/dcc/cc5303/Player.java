@@ -1,13 +1,18 @@
 package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Created by sebablasko on 9/11/15.
  */
-public class Player {
+public class Player implements Serializable{
 
-    int posX, posY, w = 7, h = 10, vida, score;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	int posX, posY, w = 7, h = 10, vida, score;
     int ButtonUp, ButtonRight, ButtonLeft;
     double speed = 0.4;
     public boolean standUp = false;

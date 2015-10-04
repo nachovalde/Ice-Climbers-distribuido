@@ -66,9 +66,7 @@ public class MainThreadClient extends Thread{
 	
 	@Override
 	public void run() {
-		while(true){
-			
-			
+		while(true){			
 			try {
                 this.sleep(1000 / UPDATE_RATE);
             } catch (InterruptedException ex) {

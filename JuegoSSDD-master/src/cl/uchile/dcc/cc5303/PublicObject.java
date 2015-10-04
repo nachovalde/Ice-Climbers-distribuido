@@ -61,7 +61,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         return getPlayers();
     }
 
-    public void setPublicPlayers(ArrayList<Player> publicPlayers){
+    public void setPublicPlayers(ArrayList<Player> publicPlayers) throws RemoteException{
         this.setPlayers(publicPlayers);
     }
 
@@ -86,13 +86,13 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 		return getPlayers().size()-1;
 	}
 
-    public void checkCollisionAllPlayers(){
+    public void checkCollisionAllPlayers() throws RemoteException{
         for (Player p : getPlayers()){
             this.checkCollision(p,getPlayers().indexOf(p));
         }
     }
 
-    private void checkCollision(Player p, int i) {
+    private void checkCollision(Player p, int i) throws RemoteException{
         for (int j = i; j < getPlayers().size(); j++) {
             if (p.collideWithPlayer(getPlayers().get(j))){
                 p.rebounding(getPlayers().get(j));
@@ -100,7 +100,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         }
     }
 
-	public void levelsDown() {
+	public void levelsDown() throws RemoteException{
         for(Bench base: getBenches()) {
             base.levelDown(levels);
         }
@@ -109,27 +109,27 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         }
 	}
 	
-    public Player getPlayerbyId(int id){
+    public Player getPlayerbyId(int id) throws RemoteException{
         return getPlayers().get(id);
     }
 
-	public ArrayList<Player> getPlayers() {
+	public ArrayList<Player> getPlayers() throws RemoteException{
 		return players;
 	}
 
-	public void setPlayers(ArrayList<Player> players) {
+	public void setPlayers(ArrayList<Player> players) throws RemoteException{
 		this.players = players;
 	}
 
-	public void setReady(boolean isReady) {
+	public void setReady(boolean isReady) throws RemoteException{
 		this.isReady = isReady;
 	}
 
-	public Bench[] getBenches() {
+	public Bench[] getBenches() throws RemoteException{
 		return benches;
 	}
 
-	public void setBenches(Bench[] benches) {
+	public void setBenches(Bench[] benches) throws RemoteException{
 		this.benches = benches;
 	}
 }

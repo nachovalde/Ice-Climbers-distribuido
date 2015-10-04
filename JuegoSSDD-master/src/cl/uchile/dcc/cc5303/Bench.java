@@ -1,13 +1,18 @@
 package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Created by sebablasko on 9/11/15.
  * Modified by franchoco on 9/20/2015.
  */
-public class Bench {
-    int posX, posY;
+public class Bench implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	int posX, posY;
     int w, h;
     int level;
 
