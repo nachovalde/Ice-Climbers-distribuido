@@ -23,4 +23,6 @@ public interface IPublicObject extends Remote{
 
 	void levelsDown() throws RemoteException;
 
+	Player getPlayerbyId(int id) throws RemoteException;
+
 }

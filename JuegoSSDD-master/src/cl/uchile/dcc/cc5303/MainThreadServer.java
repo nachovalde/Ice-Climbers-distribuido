@@ -6,6 +6,7 @@ public class MainThreadServer extends Thread {
 	
 	private IPublicObject po;
 	private final static int UPDATE_RATE = 60;
+	private final static int DX = 5;
 
 	public MainThreadServer(IPublicObject po) {
 		this.po = po;

@@ -11,7 +11,7 @@ public class Client {
 	public static void main(String[] args) {
 		
 		try {
-			
+			System.out.println(Server.urlServer);
 			IPublicObject objeto = (IPublicObject) Naming.lookup(Server.urlServer);
 			int id = objeto.createPlayer();
 			System.out.println("player id: " + id);

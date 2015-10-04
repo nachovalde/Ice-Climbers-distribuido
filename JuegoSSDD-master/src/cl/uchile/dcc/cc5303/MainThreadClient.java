@@ -18,7 +18,7 @@ public class MainThreadClient extends Thread{
     
     private int id;
     private IPublicObject objeto;
-    
+
     private JFrame frame;
     private Board tablero;
     
@@ -30,7 +30,7 @@ public class MainThreadClient extends Thread{
 		this.objeto = objeto;
 		
 		keys = new boolean[KeyEvent.KEY_LAST];
-		
+
         frame = new JFrame(TITLE);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,8 +66,25 @@ public class MainThreadClient extends Thread{
 	
 	@Override
 	public void run() {
-		while(true){			
-			try {
+		while(true){
+            try {
+                Player p=objeto.getPlayerbyId(this.id);
+                if (keys[p.ButtonUp]) {
+                    p.jump();
+                }
+                if (keys[p.ButtonRight]) {
+                    p.moveRight();
+                }
+                if (keys[p.ButtonLeft]) {
+                    p.moveLeft();
+                }
+                p.update(DX);
+                System.out.println(p.toString());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            tablero.repaint();
+            try {
                 this.sleep(1000 / UPDATE_RATE);
             } catch (InterruptedException ex) {
 
