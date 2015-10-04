@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public interface IPublicObject extends Remote{
 
+
 	int createPlayer() throws RemoteException;
 
 	boolean isReady() throws RemoteException;
@@ -13,5 +14,13 @@ public interface IPublicObject extends Remote{
 	ArrayList<Player> getPublicPlayers() throws RemoteException;
 
 	Bench[] getPublicBench() throws RemoteException;
+	
+	ArrayList<Player> getPlayers();
+	
+	void setReady(boolean isReady);
+
+	void checkCollisionAllPlayers();
+
+	void levelsDown();
 
 }

@@ -1,11 +1,13 @@
 package cl.uchile.dcc.cc5303;
 
+import java.rmi.RemoteException;
+
 public class MainThreadServer extends Thread {
 	
-	private PublicObject po;
+	private IPublicObject po;
 	private final static int UPDATE_RATE = 60;
 
-	public MainThreadServer(PublicObject po) {
+	public MainThreadServer(IPublicObject po) {
 		this.po = po;
 	}
 	
@@ -14,23 +16,28 @@ public class MainThreadServer extends Thread {
 		while(true){
 			//update barras
             boolean levelsDown = false;
-            for (Bench barra : po.benches) {
-            	for(Player p : po.players){
-	                if (p.hit(barra)) {
-                        p.speed = 0.8;
-                    }else if (p.collide(barra)) {
-                        if (p.collideUpper(barra)){
-                            p.score++;
-                        }
-	                    p.speed = 0.01;
-	                    p.standUp = true;
-	                    if (barra.getLevel() > 2){
-	                        levelsDown = true;
-	                    }
-	                }
-            	}
-                po.checkCollisionAllPlayers();
-            }
+            try {
+				for (Bench barra : po.getPublicBench()) {
+					for(Player p : po.getPlayers()){
+				        if (p.hit(barra)) {
+				            p.speed = 0.8;
+				        }else if (p.collide(barra)) {
+				            if (p.collideUpper(barra)){
+				                p.score++;
+				            }
+				            p.speed = 0.01;
+				            p.standUp = true;
+				            if (barra.getLevel() > 2){
+				                levelsDown = true;
+				            }
+				        }
+					}
+				    po.checkCollisionAllPlayers();
+				}
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
             
             // Update board
             if (levelsDown) {
@@ -38,7 +45,7 @@ public class MainThreadServer extends Thread {
             }
             
             boolean finish = true;
-            for(Player player : po.players){
+            for(Player player : po.getPlayers()){
             	if(player.stillLife()){
             		finish = false;
             		break;

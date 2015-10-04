@@ -16,15 +16,15 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public ArrayList<Player> players;
-    public boolean isReady;
+	private ArrayList<Player> players;
+    private boolean isReady;
     private final static int WIDTH = 800, HEIGHT = 600;
     private ArrayList<Color> colors;
     private  ArrayList<Integer> positions;
     private int lifes;
     private int levels = 11;
 
-    public Bench[] benches = {
+    private Bench[] benches = {
             new Bench(200, 200, 0),
             new Bench(450, 200, 0),
             new Bench(100, 200, 1),
@@ -44,8 +44,8 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     };
 
     public PublicObject(int lifes) throws RemoteException{
-        players=new ArrayList<>();
-        isReady=false;
+        setPlayers(new ArrayList<Player>());
+        setReady(false);
         this.lifes=lifes;
         colors=new ArrayList<>(4);
         colors.add(Color.blue);
@@ -58,15 +58,15 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     }
 
     public ArrayList<Player> getPublicPlayers() throws RemoteException{
-        return players;
+        return getPlayers();
     }
 
     public void setPublicPlayers(ArrayList<Player> publicPlayers){
-        this.players = publicPlayers;
+        this.setPlayers(publicPlayers);
     }
 
     public Bench[] getPublicBench() throws RemoteException{
-        return benches;
+        return getBenches();
     }
 
 	public boolean isReady() throws RemoteException{
@@ -82,34 +82,54 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         Player p=new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
         colors.remove(0);
         positions.remove(0);
-        players.add(p);
-		return players.size()-1;
+        getPlayers().add(p);
+		return getPlayers().size()-1;
 	}
 
     public void checkCollisionAllPlayers(){
-        for (Player p : players){
-            this.checkCollision(p,players.indexOf(p));
+        for (Player p : getPlayers()){
+            this.checkCollision(p,getPlayers().indexOf(p));
         }
     }
 
     private void checkCollision(Player p, int i) {
-        for (int j = i; j < players.size(); j++) {
-            if (p.collideWithPlayer(players.get(j))){
-                p.rebounding(players.get(j));
+        for (int j = i; j < getPlayers().size(); j++) {
+            if (p.collideWithPlayer(getPlayers().get(j))){
+                p.rebounding(getPlayers().get(j));
             }
         }
     }
 
 	public void levelsDown() {
-        for(Bench base: benches) {
+        for(Bench base: getBenches()) {
             base.levelDown(levels);
         }
-        for(Player p : players ){
+        for(Player p : getPlayers() ){
         	p.levelDown();
         }
 	}
 	
     public Player getPlayerbyId(int id){
-        return players.get(id);
+        return getPlayers().get(id);
     }
+
+	public ArrayList<Player> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
+	}
+
+	public void setReady(boolean isReady) {
+		this.isReady = isReady;
+	}
+
+	public Bench[] getBenches() {
+		return benches;
+	}
+
+	public void setBenches(Bench[] benches) {
+		this.benches = benches;
+	}
 }

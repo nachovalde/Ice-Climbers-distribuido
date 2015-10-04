@@ -15,7 +15,7 @@ public class Server {
 	
 	private static String getURL(){
 		String ip = "";
-		ip = "192.170.0.102";//InetAddress.getLocalHost().getHostAddress();
+		ip = "localhost";//InetAddress.getLocalHost().getHostAddress();
 		return "rmi://"+ ip +":" + port + "/bancoServer";
 	}
 	
@@ -32,17 +32,16 @@ public class Server {
 			e.printStackTrace();
 		}
 		System.out.println("Esperando jugadores para empezar...");	
-		while(true);
-		/*while(po.players.size()!=2){
+		while(po.getPlayers().size()!=2){
 			try {
                 Thread.sleep(1000/60);
             } catch (InterruptedException ex) {
 
             }
 		}
-		po.isReady = true;
+		po.setReady(true);
 		System.out.println("Iniciando Juego de SSDD...");
         MainThreadServer m = new MainThreadServer(po);
-        m.start();*/
+        m.start();
 	}	
 }
