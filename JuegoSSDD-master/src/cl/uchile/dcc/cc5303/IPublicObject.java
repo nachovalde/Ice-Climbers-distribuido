@@ -15,12 +15,12 @@ public interface IPublicObject extends Remote{
 
 	Bench[] getPublicBench() throws RemoteException;
 	
-	ArrayList<Player> getPlayers();
+	ArrayList<Player> getPlayers() throws RemoteException;
 	
-	void setReady(boolean isReady);
+	void setReady(boolean isReady) throws RemoteException;
 
-	void checkCollisionAllPlayers();
+	void checkCollisionAllPlayers() throws RemoteException;
 
-	void levelsDown();
+	void levelsDown() throws RemoteException;
 
 }
