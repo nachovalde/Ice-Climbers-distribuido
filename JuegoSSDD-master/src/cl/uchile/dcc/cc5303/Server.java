@@ -1,10 +1,7 @@
 package cl.uchile.dcc.cc5303;
 
-import java.net.InetAddress;
 import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 import java.rmi.Naming;
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 
 public class Server {
@@ -15,7 +12,7 @@ public class Server {
 	
 	private static String getURL(){
 		String ip = "";
-		ip = "localhost";//InetAddress.getLocalHost().getHostAddress();
+		ip = "localhost";
 		return "rmi://"+ ip +":" + port + "/bancoServer";
 	}
 	

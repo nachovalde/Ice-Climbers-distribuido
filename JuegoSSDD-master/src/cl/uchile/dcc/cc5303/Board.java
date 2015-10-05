@@ -123,7 +123,7 @@ public class Board extends Canvas implements Remote {
         players.add(player);
 	}
 
-    public void setPlayers(ArrayList players){
+    public void setPlayers(ArrayList<Player> players){
         this.players.clear();
         this.players.addAll(players);
     }
