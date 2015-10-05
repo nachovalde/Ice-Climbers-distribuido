@@ -51,6 +51,8 @@ public class Board extends Canvas implements Remote {
         
         //Arreglar hardcode
         for(Player p: players){
+        	if(!p.stillLife())
+        		continue;
 	        buffer.setColor(p.getColor());
 	        p.draw(buffer);
         }
