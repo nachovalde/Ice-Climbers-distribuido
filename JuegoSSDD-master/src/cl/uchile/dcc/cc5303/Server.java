@@ -3,6 +3,7 @@ package cl.uchile.dcc.cc5303;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 
 public class Server {
 	
@@ -28,8 +29,10 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("Esperando jugadores para empezar...");	
-		while(po.getPlayers().size()!=2){
+		System.out.println("Esperando jugadores para empezar...");
+		int numberOfPlayers=new Integer(args[1]);
+		System.out.println(numberOfPlayers);
+		while(po.getPlayers().size()!=numberOfPlayers){
 			try {
                 Thread.sleep(1000/60);
             } catch (InterruptedException ex) {

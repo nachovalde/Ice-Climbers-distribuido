@@ -31,6 +31,9 @@ public class Client {
 		} catch (NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}catch (IndexOutOfBoundsException e){
+			System.out.println("No se puede agregar mas jugadores!");
+			System.exit(0);
 		}
 		
 	}

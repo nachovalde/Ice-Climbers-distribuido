@@ -77,10 +77,10 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 		
 	}
 
-	public int createPlayer() throws RemoteException{
+	public int createPlayer() throws RemoteException,IndexOutOfBoundsException{
 		// TODO Auto-generated method stub
-        Color color=colors.get(0);
-        int position=positions.get(0);
+        Color color = colors.get(0);
+        int position = positions.get(0);
         Player p=new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
         colors.remove(0);
         positions.remove(0);
