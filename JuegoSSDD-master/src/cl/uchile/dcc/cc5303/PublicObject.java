@@ -54,7 +54,9 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         colors.add(Color.red);
         positions=new ArrayList<>(4);
         positions.add(WIDTH/3);
+        positions.add(WIDTH/3-20);
         positions.add(2*WIDTH/3);
+        positions.add(2*WIDTH/3+20);
     }
 
     public ArrayList<Player> getPublicPlayers() throws RemoteException{
