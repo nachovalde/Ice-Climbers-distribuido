@@ -143,12 +143,13 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
                 }
             }
         }
-        boolean res = true;
+        int res = 0;
         for(Player p: players){
-            res = res && p.stillLife();
+            if(p.stillLife())
+            	res++;
         }
         //Arreglar: se termina si un solo jugador perdio
-        return !res;
+        return res==1;
     }
 
     public ArrayList<Player> getPlayers() throws RemoteException{
