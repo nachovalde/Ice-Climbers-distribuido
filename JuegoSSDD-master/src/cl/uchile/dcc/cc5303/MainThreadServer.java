@@ -50,19 +50,18 @@ public class MainThreadServer extends Thread {
 				}
             }
             
-            boolean finish = true;
+            int alive = 0;
             try {
 				for(Player player : po.getPlayers()){
 					if(player.stillLife()){
-						finish = false;
-						break;
+						alive++;
 					}
 				}
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            if (finish)
+            if (alive==1)
             	break;
             
             try {
