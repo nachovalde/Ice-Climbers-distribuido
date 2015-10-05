@@ -85,7 +85,16 @@ public class MainThreadClient extends Thread{
             p.update(DX);
             try {
                 objeto.updatePlayer(id,p);
+                if( objeto.playerDie())
+                {
+                    System.out.println("Se termino el Juego");
+                    for (Player player : tablero.players){
+                        System.out.println(player.getScore());
+                    }
+                    break;
+                }
                 tablero.setPlayers(objeto.getPlayers());
+                tablero.setBenches(objeto.getPublicBench());
             } catch (RemoteException e) {
                 e.printStackTrace();
             }

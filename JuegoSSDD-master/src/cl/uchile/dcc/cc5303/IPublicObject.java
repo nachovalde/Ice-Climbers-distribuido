@@ -26,4 +26,6 @@ public interface IPublicObject extends Remote{
 	Player getPlayerbyId(int id) throws RemoteException;
 
 	void updatePlayer(int id, Player p) throws RemoteException;
+
+	boolean playerDie() throws RemoteException;
 }

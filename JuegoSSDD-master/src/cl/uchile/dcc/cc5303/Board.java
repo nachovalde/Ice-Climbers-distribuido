@@ -4,6 +4,7 @@ import java.awt.*;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by sebablasko on 9/11/15.
@@ -24,6 +25,15 @@ public class Board extends Canvas implements Remote {
         this.height = h;
         this.publicObject=publicObject;
         players=new ArrayList<>();
+        try {
+            bases=publicObject.getPublicBench();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setBenches(Bench[] benches){
+        this.bases=benches;
     }
 
     @Override
@@ -61,10 +71,6 @@ public class Board extends Canvas implements Remote {
         return ret;
     }
 
-    public void setBenches(Bench[] benches) {
-        this.bases = benches;
-    }
-
     public void levelsDown() {
         for(Bench base: bases) {
             base.levelDown(levels);
@@ -84,7 +90,7 @@ public class Board extends Canvas implements Remote {
 				break;
 			}
 		}
-		
+
 		for(Player p : players){
 			if( p.loseLife(height) )
 			{
@@ -103,7 +109,7 @@ public class Board extends Canvas implements Remote {
 		}
 		//Arreglar: se termina si un solo jugador perdio
 		return !res;
-		
+
 	}
 
     public void checkCollisionAllPlayers(){

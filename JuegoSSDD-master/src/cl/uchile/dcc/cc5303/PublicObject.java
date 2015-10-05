@@ -118,6 +118,37 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         players.set(id, p);
     }
 
+    @Override
+    public boolean playerDie() throws RemoteException {
+        //mejorar busqueda de bases de lvl 0
+        Bench aux = null;
+        for (int i = 0; i < benches.length; i++) {
+            if(benches[i].level == 0)
+            {
+                aux = benches[i];
+                break;
+            }
+        }
+        for(Player p : players){
+            if( p.loseLife(HEIGHT) )
+            {
+                if( Math.abs(p.posX - aux.posX) < Math.abs(p.posX - (aux.posX+aux.w) ) )
+                {
+                    p.reubicar(aux.posX + 2, aux.posY - 20);
+                }else
+                {
+                    p.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
+                }
+            }
+        }
+        boolean res = true;
+        for(Player p: players){
+            res = res && p.stillLife();
+        }
+        //Arreglar: se termina si un solo jugador perdio
+        return !res;
+    }
+
     public ArrayList<Player> getPlayers() throws RemoteException{
 		return players;
 	}
