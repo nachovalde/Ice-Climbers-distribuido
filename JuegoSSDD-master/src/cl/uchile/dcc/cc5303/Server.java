@@ -31,7 +31,6 @@ public class Server {
 		}
 		System.out.println("Esperando jugadores para empezar...");
 		int numberOfPlayers=new Integer(args[1]);
-		System.out.println(numberOfPlayers);
 		while(po.getPlayers().size()!=numberOfPlayers){
 			try {
                 Thread.sleep(1000/60);

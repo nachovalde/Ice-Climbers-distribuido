@@ -1,12 +1,12 @@
 package cl.uchile.dcc.cc5303;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class MainThreadServer extends Thread {
 	
 	private IPublicObject po;
 	private final static int UPDATE_RATE = 60;
-	private final static int DX = 5;
 
 	public MainThreadServer(IPublicObject po) {
 		this.po = po;
@@ -23,9 +23,6 @@ public class MainThreadServer extends Thread {
 				        if (p.hit(barra)) {
 				            p.speed = 0.8;
 				        }else if (p.collide(barra)) {
-				            if (p.collideUpper(barra)){
-				                p.score++;
-				            }
 				            p.speed = 0.01;
 				            p.standUp = true;
 				            if (barra.getLevel() > 2){
@@ -71,6 +68,11 @@ public class MainThreadServer extends Thread {
             }
 		}
 		System.out.println("Juego Terminado");
+		try {
+			po.displayFinalScores();
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 		try {
             this.sleep(1000);
         } catch (InterruptedException ex) {

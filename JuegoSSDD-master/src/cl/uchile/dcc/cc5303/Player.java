@@ -12,7 +12,13 @@ public class Player implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	int posX, posY, w = 7, h = 10, vida, score;
+	int posX;
+    int posY;
+    int w = 7;
+    int h = 10;
+    int vida;
+    private int id;
+    long score;
     int ButtonUp, ButtonRight, ButtonLeft;
     double speed = 0.4;
     public boolean standUp = false;
@@ -126,9 +132,8 @@ public class Player implements Serializable{
 	public boolean loseLife(int i) {
 		if(this.posY > i)
 		{
-			System.out.println("perdi");
 			quitarVida();
-            this.score=this.score-5;
+            this.score=this.score-10;
 			return true;
 		}
 		return false;
@@ -149,7 +154,7 @@ public class Player implements Serializable{
         return false;
     }
 
-    public int getScore() {
+    public long getScore() {
         return score;
     }
 
@@ -157,4 +162,15 @@ public class Player implements Serializable{
 		return this.color;
 	}
 
+    public void setScore(long score) {
+        this.score = score;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }

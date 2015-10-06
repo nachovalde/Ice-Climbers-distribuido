@@ -5,13 +5,13 @@ import java.awt.event.KeyEvent;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by luism on 03-10-15.
  */
 public class PublicObject extends UnicastRemoteObject implements IPublicObject {
-	
-	
+
     /**
 	 * 
 	 */
@@ -80,12 +80,13 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	public int createPlayer() throws RemoteException,IndexOutOfBoundsException{
 		// TODO Auto-generated method stub
         Color color = colors.get(0);
-        int position = positions.get(0);
+        int position = positions.get(0);;
         Player p=new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
         colors.remove(0);
         positions.remove(0);
         getPlayers().add(p);
-		return getPlayers().size()-1;
+        int id=getPlayers().size()-1;
+		return id;
 	}
 
     public void checkCollisionAllPlayers() throws RemoteException{
@@ -150,6 +151,18 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         }
         //Arreglar: se termina si un solo jugador perdio
         return res==1;
+    }
+
+    @Override
+    public void displayFinalScores() throws RemoteException {
+        long[] scores=new long[4];
+        for (int i = 0; i < players.size(); i++) {
+            scores[i]=players.get(i).getScore();
+        }
+        Arrays.sort(scores);
+        for (int i = 0; i < scores.length; i++) {
+            System.out.println("Jugador "+ players.get(i).getId()+" Puntaje: " +scores[i]);
+        }
     }
 
     public ArrayList<Player> getPlayers() throws RemoteException{

@@ -67,6 +67,7 @@ public class MainThreadClient extends Thread{
 	@Override
 	public void run() {
         Player p= null;
+        long inicio = System.currentTimeMillis() / 1000;
         while(true){
             try {
                 p = objeto.getPlayerbyId(this.id);
@@ -87,9 +88,6 @@ public class MainThreadClient extends Thread{
                 objeto.updatePlayer(id,p);
                 if( objeto.playerDie()){
                     System.out.println("Se termino el Juego");
-                    for (Player player : tablero.players){
-                        System.out.println(player.getScore());
-                    }
                     break;
                 }
                 if(!objeto.getPlayerbyId(this.id).stillLife())
@@ -107,15 +105,19 @@ public class MainThreadClient extends Thread{
 
             }
 		}
+        long fin=0;
         try {
         	p = objeto.getPlayerbyId(this.id);
+            fin=System.currentTimeMillis()/1000;
+            p.setScore(fin-inicio);
+            tablero.setPlayers(objeto.getPlayers());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
         if(p.stillLife())
-			System.out.println("Gané el juego " + p.getColor() + " con puntaje = " + p.getScore());
+			System.out.println("Gano el juego, el jugador: " + id+ " con puntaje = " + (fin-inicio+10));
 		else
-			System.out.println("Perdí el juego " + p.getColor() + " con puntaje = " + p.getScore());
+			System.out.println("Perdio el jugador: " + id + " con puntaje = " + (fin-inicio));
 	}
 
 }
