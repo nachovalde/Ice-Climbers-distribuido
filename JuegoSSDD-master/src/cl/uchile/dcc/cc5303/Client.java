@@ -11,6 +11,7 @@ public class Client {
 	public static void main(String[] args) {
 		
 		try {
+			System.setProperty("java.rmi.server.hostname", Server.ip); 
 			System.out.println(Server.urlServer);
 			IPublicObject objeto = (IPublicObject) Naming.lookup(Server.urlServer);
 			int id = objeto.createPlayer();
