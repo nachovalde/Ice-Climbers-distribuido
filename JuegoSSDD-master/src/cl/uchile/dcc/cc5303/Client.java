@@ -20,7 +20,7 @@ public class Client {
 			}
 			
 			MainThreadClient m = new MainThreadClient(objeto, id);
-			m.start();		
+			m.start();	
 			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

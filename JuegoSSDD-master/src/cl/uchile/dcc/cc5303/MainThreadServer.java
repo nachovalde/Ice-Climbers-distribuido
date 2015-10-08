@@ -1,7 +1,6 @@
 package cl.uchile.dcc.cc5303;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class MainThreadServer extends Thread {
 	

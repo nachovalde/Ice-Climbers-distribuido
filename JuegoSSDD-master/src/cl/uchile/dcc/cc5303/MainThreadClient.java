@@ -40,9 +40,7 @@ public class MainThreadClient extends Thread{
         	tablero.addPlayer(p);
         }
         tablero.bases = objeto.getPublicBench();
-        
-        System.out.println(tablero);
-        
+                
         frame.add(tablero);
         tablero.setSize(WIDTH, HEIGHT);
         

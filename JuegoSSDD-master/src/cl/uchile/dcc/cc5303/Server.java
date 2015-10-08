@@ -3,7 +3,6 @@ package cl.uchile.dcc.cc5303;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.util.Arrays;
 
 public class Server {
 	
@@ -18,29 +17,37 @@ public class Server {
 	}
 	
 	public static void main(String[] args) throws RemoteException {
-		IPublicObject po = new PublicObject(5);
-		try {
-			Naming.rebind(urlServer, po);
-			System.out.println("Objeto publicado en "+urlServer);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Esperando jugadores para empezar...");
-		int numberOfPlayers=new Integer(args[1]);
-		while(po.getPlayers().size()!=numberOfPlayers){
+		if(args.length > 1)
+		{
+			int lifes = new Integer(args[0]);
+			IPublicObject po = new PublicObject(lifes);
 			try {
-                Thread.sleep(1000/60);
-            } catch (InterruptedException ex) {
-
-            }
+				Naming.rebind(urlServer, po);
+				System.out.println("Objeto publicado en "+urlServer);
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			int numberOfPlayers=new Integer(args[2]);
+			System.out.println("Esperando " + numberOfPlayers + " jugadores para empezar...");
+			while(po.getPlayers().size()!=numberOfPlayers){
+				try {
+	                Thread.sleep(1000/60);
+	            } catch (InterruptedException ex) {
+	
+	            }
+			}
+			po.setReady(true);
+			System.out.println("Iniciando Juego de SSDD...");
+	        MainThreadServer m = new MainThreadServer(po);
+	        m.start();
+		}else
+		{
+			System.out.println("Deben ir dos argumentos: -N NumeroDeVidas y -n NumeroDeJugadores");
 		}
-		po.setReady(true);
-		System.out.println("Iniciando Juego de SSDD...");
-        MainThreadServer m = new MainThreadServer(po);
-        m.start();
 	}	
 }
