@@ -6,6 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Created by luism on 03-10-15.
@@ -19,15 +20,17 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	private ArrayList<Player> players;
 	private int lastPlayer = 0; 
     private int numberOfPlayers;
-	private boolean isReady;
     private final static int WIDTH = 800, HEIGHT = 600;
+    
+    private boolean isReady;
+    private boolean AllPlay;
+    
+    private boolean[] responses;
+    private int countResponse;
     
     private int lifes;
     private int levels = 11;
     
-    private int revanchas = 0;
-    private boolean estado_revancha = true;
-
     private Bench[] benches = {
             new Bench(200, 200, 0),
             new Bench(450, 200, 0),
@@ -59,8 +62,11 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     public PublicObject(int lifes, int numberOfPlayers) throws RemoteException{
         setPlayers(new ArrayList<Player>());
         this.numberOfPlayers = numberOfPlayers;
-        setReady(false);
         this.lifes=lifes;
+        setReady(false);
+        responses = new boolean[numberOfPlayers];
+        countResponse = 0;
+        
     }
 
     public ArrayList<Player> getPublicPlayers() throws RemoteException{
@@ -76,14 +82,12 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     }
 
 	public boolean isReady() throws RemoteException{
-		// TODO Auto-generated method stub
         return isReady;
-		
 	}
 
 	public int createPlayer() throws RemoteException{
         initPlayer();
-        int id=getPlayers().size()-1;
+        int id = getPlayers().size()-1;
 		return id;
 	}
 	
@@ -91,11 +95,12 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 		Color color = colors[lastPlayer];
         int position = positions[lastPlayer];
         Player p = new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
-        incrementPlayer();
-        getPlayers().add(p);
+        incrementLastPlayer();
+        p.setId(players.size()-1);
+        players.add(p);
 	}
 
-    private void incrementPlayer() {
+    private void incrementLastPlayer() {
     	lastPlayer++;
     }
 
@@ -130,7 +135,9 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     public void updatePlayer(int id, Player p) throws  RemoteException{
         players.set(id, p);
     }
-
+    public static int randInt(int min, int max) {
+    	return min + (int)(Math.random()*((max - min) + 1));
+    }
     @Override
     public boolean playerDie() throws RemoteException {
         //mejorar busqueda de bases de lvl 0
@@ -145,13 +152,14 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         for(Player p : players){
             if( p.loseLife(HEIGHT) )
             {
-                if( Math.abs(p.posX - aux.posX) < Math.abs(p.posX - (aux.posX+aux.w) ) )
+            	p.reubicar(randInt(aux.posX,aux.posX+aux.w),aux.posY - 20);
+                /*if( Math.abs(p.posX - aux.posX) < Math.abs(p.posX - (aux.posX+aux.w) ) )
                 {
                     p.reubicar(aux.posX + 2, aux.posY - 20);
                 }else
                 {
                     p.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
-                }
+                }*/
             }
         }
         int res = 0;
@@ -186,6 +194,10 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	public void setReady(boolean isReady) throws RemoteException{
 		this.isReady = isReady;
 	}
+	
+	public boolean getReady() throws RemoteException{
+		return this.isReady;
+	}
 
 	public Bench[] getBenches() throws RemoteException{
 		return benches;
@@ -196,35 +208,53 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	}
 
 	@Override
-	public void responseRematch(int res) throws RemoteException {
-		if(res == -1)
-			estado_revancha = false;
-		revanchas++;
-	}
-
-	@Override
-	public boolean isReadyRematch() throws RemoteException {
-		return players.size() == revanchas;
-	}
-
-	@Override
-	public boolean rematch() throws RemoteException {
-		return estado_revancha;
-	}
-
-	@Override
-	public int getRevanchas() throws RemoteException {
-		return revanchas;
-	}
-
-	@Override
 	public void init() throws RemoteException {
 		lastPlayer = 0;
 		setPlayers(new ArrayList<Player>());
 		for (int i = 0; i < numberOfPlayers; i++) {
 			initPlayer();
 		}
+		countResponse = 0;
 	}
+
+	@Override
+	public boolean responseAllPlayer() {
+		boolean res = true;
+		for (int i = 0; i < responses.length; i++) {
+			res = res && responses[i];
+		}
+		return res;
+	}
+
+	@Override
+	public void waitResponses() throws RemoteException{
+		while(countResponse < numberOfPlayers){
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void setAllPlay(boolean arg) throws RemoteException {
+		this.AllPlay = arg;
+	}
+
+	@Override
+	public boolean getAllPlay() throws RemoteException {
+		return this.AllPlay;
+	}
+
+	@Override
+	public void sendResponse(int id, int res) throws RemoteException {
+		responses[id] = res == 1 ? true : false;
+		countResponse++;
+	}
+
+
 
 
 }

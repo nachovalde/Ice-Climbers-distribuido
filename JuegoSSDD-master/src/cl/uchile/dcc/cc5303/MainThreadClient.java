@@ -64,7 +64,7 @@ public class MainThreadClient extends Thread{
 	
 	@Override
 	public void run() {
-        Player p= null;
+        Player p = null;
         long inicio = System.currentTimeMillis() / 1000;
         while(true){
             try {
@@ -108,6 +108,7 @@ public class MainThreadClient extends Thread{
         	p = objeto.getPlayerbyId(this.id);
             fin=System.currentTimeMillis()/1000;
             p.setScore(fin-inicio);
+            objeto.updatePlayer(this.id, p);
             tablero.setPlayers(objeto.getPlayers());
 		} catch (RemoteException e) {
 			e.printStackTrace();

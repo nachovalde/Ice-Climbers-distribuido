@@ -17,23 +17,24 @@ public class Client {
 			IPublicObject objeto = (IPublicObject) Naming.lookup(Server.urlServer);
 			int id = objeto.createPlayer();
 			System.out.println("player id: " + id);
-			while(!objeto.isReady()){
-				
-			}
-			while(true){
+			
+			while(!objeto.isReady()){}
+			
+			while(objeto.getAllPlay()){
 				MainThreadClient m = new MainThreadClient(objeto, id);
 				m.start();
+				
 				while(m.isAlive()){}
 				
-				System.out.println("\nRevancha?: Si:1 No:-1");
 				Scanner sc = new Scanner(System.in);
+				System.out.println("Revancha? Si:1 No:-1");
 				int res = sc.nextInt();
-				objeto.responseRematch(res);
-				while(!objeto.isReadyRematch()){}
-				if(!objeto.rematch()){
-		        	break;
-		        }
+				objeto.sendResponse(id, res);
+				System.out.println("esperando otras respuestas");
+				objeto.waitResponses();
+				while(!objeto.isReady()){}
 			}
+			
 			
 			
 		} catch (MalformedURLException e) {

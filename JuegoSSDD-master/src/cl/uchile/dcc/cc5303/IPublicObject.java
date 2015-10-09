@@ -18,6 +18,12 @@ public interface IPublicObject extends Remote{
 	ArrayList<Player> getPlayers() throws RemoteException;
 	
 	void setReady(boolean isReady) throws RemoteException;
+	
+	boolean getReady() throws RemoteException;
+	
+	void setAllPlay(boolean isReady) throws RemoteException;
+	
+	boolean getAllPlay() throws RemoteException;
 
 	void checkCollisionAllPlayers() throws RemoteException;
 
@@ -31,13 +37,12 @@ public interface IPublicObject extends Remote{
 
 	void displayFinalScores() throws RemoteException;
 
-	void responseRematch(int res) throws RemoteException;
-
-	boolean isReadyRematch() throws RemoteException;
-
-	boolean rematch() throws RemoteException;
-
-	int getRevanchas() throws RemoteException;
-
 	void init() throws RemoteException;
+
+	boolean responseAllPlayer() throws RemoteException;
+
+	void waitResponses() throws RemoteException;
+
+	void sendResponse(int id, int res) throws RemoteException;
+
 }
