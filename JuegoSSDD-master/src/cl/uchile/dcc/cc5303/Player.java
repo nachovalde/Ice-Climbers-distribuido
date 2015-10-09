@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Created by sebablasko on 9/11/15.
  */
-public class Player implements Serializable{
+public class Player implements Serializable, Comparable<Player>{
 
     /**
 	 * 
@@ -61,7 +61,7 @@ public class Player implements Serializable{
 
     @Override
     public String toString(){
-        return "player: position ("+this.posX+","+this.posY+")";
+        return "player "+ id +": Score " + score;
     }
 
     public boolean collide(Bench b){
@@ -173,4 +173,9 @@ public class Player implements Serializable{
     public void setId(int id) {
         this.id = id;
     }
+
+	@Override
+	public int compareTo(Player o) {
+		return -Long.compare(score, o.getScore());
+	}
 }

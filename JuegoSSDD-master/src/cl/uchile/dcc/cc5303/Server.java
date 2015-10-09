@@ -7,7 +7,7 @@ import java.rmi.RemoteException;
 public class Server {
 	
 	private static String port = "1099";
-	public static String ip = "172.20.10.4";
+	public static String ip = "127.0.0.1";
 	public static String urlServer = getURL();
 	
 	private static String getURL(){

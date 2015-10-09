@@ -104,18 +104,22 @@ public class MainThreadClient extends Thread{
             }
 		}
         long fin=0;
-        try {
-        	p = objeto.getPlayerbyId(this.id);
-            fin=System.currentTimeMillis()/1000;
-            p.setScore(fin-inicio);
-            tablero.setPlayers(objeto.getPlayers());
-		} catch (RemoteException e) {
-			e.printStackTrace();
-		}
-        if(p.stillLife())
-			System.out.println("Gano el juego, el jugador: " + id+ " con puntaje = " + (fin-inicio+10));
-		else
-			System.out.println("Perdio el jugador: " + id + " con puntaje = " + (fin-inicio));
+        fin=System.currentTimeMillis()/1000;
+        try{
+	        p = objeto.getPlayerbyId(this.id);        
+	        if(p.stillLife()){
+	        	p.setScore(fin-inicio+10);
+				System.out.println("Gano el juego, el jugador: " + id+ " con puntaje = " + p.getScore());
+	        }
+			else{
+				p.setScore(fin-inicio);
+				System.out.println("Perdio el jugador: " + id + " con puntaje = " + (fin-inicio));
+			}
+	        objeto.updatePlayer(this.id, p);	        
+        }
+        catch(RemoteException e) {
+            e.printStackTrace();
+        }
         frame.dispose();
 	}
 
