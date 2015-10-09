@@ -17,12 +17,16 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<Player> players;
-    private boolean isReady;
+	private int lastPlayer = 0; 
+    private int numberOfPlayers;
+	private boolean isReady;
     private final static int WIDTH = 800, HEIGHT = 600;
-    private ArrayList<Color> colors;
-    private  ArrayList<Integer> positions;
+    
     private int lifes;
     private int levels = 11;
+    
+    private int revanchas = 0;
+    private boolean estado_revancha = true;
 
     private Bench[] benches = {
             new Bench(200, 200, 0),
@@ -42,21 +46,21 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
             new Bench(75, 100, 9),
             new Bench(50, 100, 10)
     };
+    
+    private Color[] colors = {
+    		Color.blue,
+    		Color.green,
+    		Color.orange,
+    		Color.red
+    		};
+    
+    private  int[] positions = {WIDTH/3, WIDTH/3-20, 2*WIDTH/3, 2*WIDTH/3+20};
 
-    public PublicObject(int lifes) throws RemoteException{
+    public PublicObject(int lifes, int numberOfPlayers) throws RemoteException{
         setPlayers(new ArrayList<Player>());
+        this.numberOfPlayers = numberOfPlayers;
         setReady(false);
         this.lifes=lifes;
-        colors=new ArrayList<>(4);
-        colors.add(Color.blue);
-        colors.add(Color.green);
-        colors.add(Color.orange);
-        colors.add(Color.red);
-        positions=new ArrayList<>(4);
-        positions.add(WIDTH/3);
-        positions.add(WIDTH/3-20);
-        positions.add(2*WIDTH/3);
-        positions.add(2*WIDTH/3+20);
     }
 
     public ArrayList<Player> getPublicPlayers() throws RemoteException{
@@ -77,19 +81,25 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 		
 	}
 
-	public int createPlayer() throws RemoteException,IndexOutOfBoundsException{
-		// TODO Auto-generated method stub
-        Color color = colors.get(0);
-        int position = positions.get(0);;
-        Player p=new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
-        colors.remove(0);
-        positions.remove(0);
-        getPlayers().add(p);
+	public int createPlayer() throws RemoteException{
+        initPlayer();
         int id=getPlayers().size()-1;
 		return id;
 	}
+	
+	private void initPlayer() throws RemoteException{
+		Color color = colors[lastPlayer];
+        int position = positions[lastPlayer];
+        Player p = new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
+        incrementPlayer();
+        getPlayers().add(p);
+	}
 
-    public void checkCollisionAllPlayers() throws RemoteException{
+    private void incrementPlayer() {
+    	lastPlayer++;
+    }
+
+	public void checkCollisionAllPlayers() throws RemoteException{
         for (Player p : getPlayers()){
             this.checkCollision(p,getPlayers().indexOf(p));
         }
@@ -155,7 +165,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
     @Override
     public void displayFinalScores() throws RemoteException {
-        long[] scores=new long[4];
+        long[] scores=new long[players.size()];
         for (int i = 0; i < players.size(); i++) {
             scores[i]=players.get(i).getScore();
         }
@@ -184,4 +194,37 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	public void setBenches(Bench[] benches) throws RemoteException{
 		this.benches = benches;
 	}
+
+	@Override
+	public void responseRematch(int res) throws RemoteException {
+		if(res == -1)
+			estado_revancha = false;
+		revanchas++;
+	}
+
+	@Override
+	public boolean isReadyRematch() throws RemoteException {
+		return players.size() == revanchas;
+	}
+
+	@Override
+	public boolean rematch() throws RemoteException {
+		return estado_revancha;
+	}
+
+	@Override
+	public int getRevanchas() throws RemoteException {
+		return revanchas;
+	}
+
+	@Override
+	public void init() throws RemoteException {
+		lastPlayer = 0;
+		setPlayers(new ArrayList<Player>());
+		for (int i = 0; i < numberOfPlayers; i++) {
+			initPlayer();
+		}
+	}
+
+
 }

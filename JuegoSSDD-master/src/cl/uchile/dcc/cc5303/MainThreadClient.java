@@ -116,6 +116,7 @@ public class MainThreadClient extends Thread{
 			System.out.println("Gano el juego, el jugador: " + id+ " con puntaje = " + (fin-inicio+10));
 		else
 			System.out.println("Perdio el jugador: " + id + " con puntaje = " + (fin-inicio));
+        frame.dispose();
 	}
 
 }

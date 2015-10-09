@@ -30,4 +30,14 @@ public interface IPublicObject extends Remote{
 	boolean playerDie() throws RemoteException;
 
 	void displayFinalScores() throws RemoteException;
+
+	void responseRematch(int res) throws RemoteException;
+
+	boolean isReadyRematch() throws RemoteException;
+
+	boolean rematch() throws RemoteException;
+
+	int getRevanchas() throws RemoteException;
+
+	void init() throws RemoteException;
 }
