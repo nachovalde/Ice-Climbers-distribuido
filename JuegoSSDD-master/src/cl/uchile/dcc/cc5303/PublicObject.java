@@ -6,7 +6,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
+import java.util.Collections;
+
 
 /**
  * Created by luism on 03-10-15.
@@ -87,7 +88,8 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
 	public int createPlayer() throws RemoteException{
         initPlayer();
-        int id = getPlayers().size()-1;
+        int id=getPlayers().size()-1;
+        players.get(id).setId(id);
 		return id;
 	}
 	
@@ -173,13 +175,10 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
     @Override
     public void displayFinalScores() throws RemoteException {
-        long[] scores=new long[players.size()];
-        for (int i = 0; i < players.size(); i++) {
-            scores[i]=players.get(i).getScore();
-        }
-        Arrays.sort(scores);
-        for (int i = 0; i < scores.length; i++) {
-            System.out.println("Jugador "+ players.get(i).getId()+" Puntaje: " +scores[i]);
+        ArrayList<Player> sortedPlayers = (ArrayList<Player>) players.clone();
+        Collections.sort(sortedPlayers);
+        for (int i = 0; i < sortedPlayers.size(); i++) {
+            System.out.println("Jugador "+ sortedPlayers.get(i).getId()+" Puntaje: " + sortedPlayers.get(i).getScore());
         }
     }
 
