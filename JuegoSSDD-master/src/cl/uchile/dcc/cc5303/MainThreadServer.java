@@ -45,20 +45,13 @@ public class MainThreadServer extends Thread {
 					e.printStackTrace();
 				}
             }
-            
-            int alive = 0;
             try {
-				for(Player player : po.getPlayers()){
-					if(player.stillLife()){
-						alive++;
-					}
-				}
+				if (po.gameOver())
+					break;
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            if (alive==1)
-            	break;
             
             try {
                 this.sleep(1000 / UPDATE_RATE);
@@ -68,7 +61,7 @@ public class MainThreadServer extends Thread {
 		}
 		System.out.println("Juego Terminado");
 		try {
-			po.displayFinalScores();
+			System.out.println(po.displayFinalScores());
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}

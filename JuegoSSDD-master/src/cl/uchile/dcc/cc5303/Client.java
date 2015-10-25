@@ -12,9 +12,10 @@ public class Client {
 	public static void main(String[] args) throws InterruptedException {
 		
 		try {
-			System.setProperty("java.rmi.server.hostname", Server.ip); 
-			System.out.println(Server.urlServer);
-			IPublicObject objeto = (IPublicObject) Naming.lookup(Server.urlServer);
+			String ip = args[0];
+			System.setProperty("java.rmi.server.hostname", ip); 
+			System.out.println(Server.getURL(ip));
+			IPublicObject objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
 			int id = objeto.createPlayer();
 			System.out.println("player id: " + id);
 			
@@ -25,7 +26,9 @@ public class Client {
 				m.start();
 				
 				while(m.isAlive()){}
-				
+				while(!objeto.gameOver()){}
+				System.out.println("Resultados Finales:");
+		        System.out.println(objeto.displayFinalScores());
 				Scanner sc = new Scanner(System.in);
 				System.out.println("Revancha? Si:1 No:-1");
 				int res = sc.nextInt();

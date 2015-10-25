@@ -7,25 +7,24 @@ import java.rmi.RemoteException;
 public class Server {
 	
 	private static String port = "1099";
-
-	public static String ip = "127.0.0.1";
-
-	public static String urlServer = getURL();
 	
-	private static String getURL(){
-		return "rmi://"+ ip +":" + port + "/IceClimbers";
+	public static String url = "IceClimbers";
+	
+	public static String getURL(String ip){
+		return "rmi://"+ ip +":" + port + "/" + url;
 	}
 	
 	public static void main(String[] args) throws RemoteException {
-		if(args.length == 4)
+		if(args.length == 5)
 		{
-			int lifes = new Integer(args[1]);
-			int numberOfPlayers=new Integer(args[3]);
+			String ip = args[0];
+			int lifes = new Integer(args[2]);
+			int numberOfPlayers=new Integer(args[4]);
 			IPublicObject po = new PublicObject(lifes, numberOfPlayers);
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
-				Naming.rebind(urlServer, po);
-				System.out.println("Objeto publicado en "+urlServer);
+				Naming.rebind(getURL(ip), po);
+				System.out.println("Objeto publicado en "+getURL(ip));
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -64,7 +63,7 @@ public class Server {
 		        
 		}else
 		{
-			System.out.println("Deben ir dos argumentos: -N NumeroDeVidas y -n NumeroDeJugadores");
+			System.out.println("Deben ir tres argumentos: IP, -N NumeroDeVidas y -n NumeroDeJugadores");
 		}
 	}	
 }

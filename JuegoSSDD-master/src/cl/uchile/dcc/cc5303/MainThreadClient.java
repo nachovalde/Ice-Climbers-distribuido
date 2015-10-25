@@ -107,16 +107,18 @@ public class MainThreadClient extends Thread{
         try{
 	        p = objeto.getPlayerbyId(this.id);        
 	        if(p.stillLife()){
-	        	p.setScore(fin-inicio+10);
-				System.out.println("Gano el juego, el jugador: " + id+ " con puntaje = " + p.getScore());
+	        	p.addScore(5*(fin-inicio)+10);
+				System.out.println("Ganaste con puntaje = " + p.getScore());
+				p.vida=0;
+				Thread.sleep(1000/ UPDATE_RATE);
 	        }
 			else{
-				p.setScore(fin-inicio);
-				System.out.println("Perdio el jugador: " + id + " con puntaje = " + (fin-inicio));
+				p.addScore(5*(fin-inicio));
+				System.out.println("Perdiste con puntaje = " + p.getScore());
 			}
-	        objeto.updatePlayer(this.id, p);	        
+	        objeto.updatePlayer(this.id, p);
         }
-        catch(RemoteException e) {
+        catch(RemoteException | InterruptedException e) {
             e.printStackTrace();
         }
         frame.dispose();

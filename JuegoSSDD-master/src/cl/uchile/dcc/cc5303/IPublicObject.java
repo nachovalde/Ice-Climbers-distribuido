@@ -35,7 +35,7 @@ public interface IPublicObject extends Remote{
 
 	boolean playerDie() throws RemoteException;
 
-	void displayFinalScores() throws RemoteException;
+	String displayFinalScores() throws RemoteException;
 
 	void init() throws RemoteException;
 
@@ -44,5 +44,7 @@ public interface IPublicObject extends Remote{
 	void waitResponses() throws RemoteException;
 
 	void sendResponse(int id, int res) throws RemoteException;
+	
+	boolean gameOver() throws RemoteException;
 
 }

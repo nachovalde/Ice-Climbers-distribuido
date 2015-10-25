@@ -87,24 +87,18 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	}
 
 	public int createPlayer() throws RemoteException{
-        initPlayer();
-        int id=getPlayers().size()-1;
-        players.get(id).setId(id);
-		return id;
+        initPlayer();        
+		return players.get(getPlayers().size()-1).getId();
 	}
 	
 	private void initPlayer() throws RemoteException{
 		Color color = colors[lastPlayer];
         int position = positions[lastPlayer];
         Player p = new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
-        incrementLastPlayer();
-        p.setId(players.size()-1);
+        lastPlayer++;
+        p.setId(players.size());
         players.add(p);
 	}
-
-    private void incrementLastPlayer() {
-    	lastPlayer++;
-    }
 
 	public void checkCollisionAllPlayers() throws RemoteException{
         for (Player p : getPlayers()){
@@ -174,12 +168,14 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     }
 
     @Override
-    public void displayFinalScores() throws RemoteException {
+    public String displayFinalScores() throws RemoteException {
         ArrayList<Player> sortedPlayers = (ArrayList<Player>) players.clone();
         Collections.sort(sortedPlayers);
+        String result = "";
         for (int i = 0; i < sortedPlayers.size(); i++) {
-            System.out.println("Jugador "+ sortedPlayers.get(i).getId()+" Puntaje: " + sortedPlayers.get(i).getScore());
+            result+="Jugador "+ sortedPlayers.get(i).getId()+" Puntaje: " + sortedPlayers.get(i).getScore() + "\n";
         }
+        return result;
     }
 
     public ArrayList<Player> getPlayers() throws RemoteException{
@@ -251,6 +247,15 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	public void sendResponse(int id, int res) throws RemoteException {
 		responses[id] = res == 1 ? true : false;
 		countResponse++;
+	}
+
+	@Override
+	public boolean gameOver() throws RemoteException {
+		boolean flag = true;
+		for(Player player:players){
+			flag &= !player.stillLife();
+		}
+		return flag;
 	}
 
 

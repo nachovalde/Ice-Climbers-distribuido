@@ -130,7 +130,7 @@ public class Player implements Serializable, Comparable<Player>{
     }
 
 	public boolean loseLife(int i) {
-		if(this.posY > i)
+		if(this.posY > i && this.stillLife())
 		{
 			quitarVida();
             this.score=this.score-10;
@@ -162,8 +162,8 @@ public class Player implements Serializable, Comparable<Player>{
 		return this.color;
 	}
 
-    public void setScore(long score) {
-        this.score = score;
+    public void addScore(long score) {
+        this.score += score;
     }
 
     public int getId() {
