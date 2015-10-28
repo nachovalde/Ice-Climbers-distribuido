@@ -24,7 +24,7 @@ public class Player implements Serializable, Comparable<Player>{
     public boolean standUp = false;
 	private Color color;
 
-    public Player(int x, int y, int vida, int ButtonUP, int ButtonRight, int ButtonLeft, Color color){
+    public Player(int id, int x, int y, int vida, int ButtonUP, int ButtonRight, int ButtonLeft, Color color){
         this.posX = x;
         this.posY = y;
         this.vida = vida;
@@ -33,6 +33,7 @@ public class Player implements Serializable, Comparable<Player>{
         this.ButtonRight = ButtonRight;
         this.ButtonLeft = ButtonLeft;
         this.color = color;
+        this.id=id;
     }
 
     public void jump(){

@@ -1,5 +1,6 @@
 package cl.uchile.dcc.cc5303;
 
+import javax.swing.*;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -29,9 +30,14 @@ public class Client {
 				while(!objeto.gameOver()){}
 				System.out.println("Resultados Finales:");
 		        System.out.println(objeto.displayFinalScores());
-				Scanner sc = new Scanner(System.in);
-				System.out.println("Revancha? Si:1 No:-1");
-				int res = sc.nextInt();
+				int res=0;
+				int reply = JOptionPane.showConfirmDialog(null, "¿Desea jugar una Revancha?", "Revancha", JOptionPane.YES_NO_OPTION);
+				if (reply == JOptionPane.YES_OPTION) {
+					res=1;
+				}
+				else {
+					res=-1;
+				}
 				objeto.sendResponse(id, res);
 				System.out.println("esperando otras respuestas");
 				objeto.waitResponses();

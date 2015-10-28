@@ -94,7 +94,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	private void initPlayer() throws RemoteException{
 		Color color = colors[lastPlayer];
         int position = positions[lastPlayer];
-        Player p = new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
+        Player p = new Player(0,position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
         lastPlayer++;
         p.setId(players.size());
         players.add(p);
