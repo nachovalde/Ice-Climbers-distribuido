@@ -32,8 +32,8 @@ public class Server {
 		if(args.length == 5)
 		{
 			String ip = args[0];
-			int lifes = new Integer(args[2]);
-			int numberOfPlayers=new Integer(args[4]);
+			int lifes = new Integer(args[1]);
+			int numberOfPlayers=new Integer(args[2]);
 			IPublicObject po = new PublicObject(lifes, numberOfPlayers);
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
