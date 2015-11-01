@@ -3,9 +3,10 @@ package cl.uchile.dcc.cc5303;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class Server {
-	
+	ArrayList<Server> servers;
 	private static String port = "1099";
 	
 	public static String url = "IceClimbers";
@@ -14,6 +15,19 @@ public class Server {
 		return "rmi://"+ ip +":" + port + "/" + url;
 	}
 	
+	public void netRegister(Server server, Server otroServer){
+		servers.add(otroServer);
+		ArrayList<Server> otherServers = otroServer.addServer(server);
+		servers.addAll(otherServers);
+	}
+	
+	private ArrayList<Server> addServer(Server newServer) {
+		for (Server otherServer : servers) {
+			otherServer.servers.add(newServer);
+		}
+		return servers;
+	}
+
 	public static void main(String[] args) throws RemoteException {
 		if(args.length == 5)
 		{
