@@ -11,5 +11,6 @@ public interface IServer extends Remote {
 	public void netRegister(IServer server, IServer neighbour) throws RemoteException;
 	public double getLoad() throws RemoteException;
 	public IServer minLoadServer(ArrayList<IServer> servers) throws RemoteException;
-
+	void setServers(ArrayList<IServer> nbs) throws RemoteException;
+	ArrayList<IServer> getServers() throws RemoteException;
 }

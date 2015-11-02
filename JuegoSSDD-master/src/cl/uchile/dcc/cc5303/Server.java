@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Server extends UnicastRemoteObject implements IServer{
 	
 	private static final long serialVersionUID = 1L;
-
+	
 	private static String port = "1099";
 	
 	public static String gameName = "IceClimbers";	
@@ -20,19 +20,18 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public String url;
 	
-	public ArrayList<IServer> servers;
+	public static ArrayList<IServer> servers;
 	
 	public static String getURL(String ip){
 		return "rmi://"+ ip +":" + port + "/" + gameName;
 	}
-	
 	public Server(String ip) throws RemoteException {
 		this.ip = ip;
 		this.url = "rmi://"+ ip +":" + port + "/";
 		this.servers = new ArrayList<IServer>();
 	}
 	
-	public Server(int numPlayers, String ip, String ipVecino) throws RemoteException, MalformedURLException, NotBoundException{
+	public Server(String ip, String ipVecino) throws RemoteException, MalformedURLException, NotBoundException{
 		this(ip);
 		String urlVecino = "rmi://"+ ipVecino +":" + port + "/server";
 		IServer nb = (IServer)Naming.lookup(urlVecino); 
@@ -41,17 +40,23 @@ public class Server extends UnicastRemoteObject implements IServer{
 		netRegister(this, nb);
 	}
 	
-	public static void main(String[] args) throws RemoteException, MalformedURLException {
-		if(args.length == 5)
+	public static void main(String[] args) throws RemoteException, MalformedURLException, NotBoundException {
+		if(args.length == 3 || args.length == 4)
 		{
 			String ip = args[0];
-			Server s = new Server(ip);		
-			int lifes = new Integer(args[2]);
-			int numberOfPlayers=new Integer(args[4]);
+			Server s = null;
+			if (args.length==3)
+				s = new Server(ip);
+			else
+				s = new Server(ip, args[3]);
+			System.out.println(s.url);
+			System.out.println(servers);
+			int lifes = new Integer(args[1]);
+			int numberOfPlayers=new Integer(args[2]);
 			IPublicObject po = new PublicObject(lifes, numberOfPlayers);
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
-				Naming.rebind(s.url, po);
+				Naming.rebind(s.getURL(s.ip), po);
 				System.out.println("Objeto publicado en "+s.url);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
@@ -100,15 +105,20 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 
 	@Override
-	public ArrayList<IServer> addServer(IServer newServer) throws RemoteException {
-		servers.add(newServer);
+	public ArrayList<IServer> addServer(IServer newServer) throws RemoteException{
+		for (IServer neighbour : servers) {
+			ArrayList<IServer> nbs = neighbour.getServers();
+			nbs.add(newServer);
+			neighbour.setServers(nbs);
+		}
 		return servers;
 	}
 
 	@Override
-	public void netRegister(IServer server, IServer neighbour) throws RemoteException {
-		// TODO Auto-generated method stub
-		
+	public void netRegister(IServer server, IServer neighbour) throws RemoteException{
+		servers.add(neighbour);
+		ArrayList<IServer> otherServers = neighbour.addServer(server);
+		servers.addAll(otherServers);
 	}
 
 	@Override
@@ -120,5 +130,19 @@ public class Server extends UnicastRemoteObject implements IServer{
 	public IServer minLoadServer(ArrayList<IServer> servers) throws RemoteException {
 		// TODO Auto-generated method stub
 		return servers.get(0);
-	}	
+	}
+	@Override
+	public void setServers(ArrayList<IServer> servers) throws RemoteException {
+		this.servers = servers;
+		
+	}
+	@Override
+	public ArrayList<IServer> getServers() throws RemoteException {
+		return this.servers;
+	}
+	
+	@Override
+	public String toString() {
+		return ip;
+	}
 }
