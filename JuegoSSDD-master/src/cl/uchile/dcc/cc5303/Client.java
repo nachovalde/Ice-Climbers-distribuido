@@ -36,6 +36,7 @@ public class Client {
 				System.out.println("esperando otras respuestas");
 				objeto.waitResponses();
 				while(!objeto.isReady()){}
+				sc.close();
 			}
 			
 			
