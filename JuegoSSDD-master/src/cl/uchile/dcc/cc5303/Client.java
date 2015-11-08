@@ -9,6 +9,11 @@ import java.util.Scanner;
 
 public class Client {
 	
+	private static IPublicObject objeto;
+	
+	public Client() {
+		super();
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -16,7 +21,9 @@ public class Client {
 			String ip = args[0];
 			System.setProperty("java.rmi.server.hostname", ip); 
 			System.out.println(Server.getURL(ip));
-			IPublicObject objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
+			objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
+			Client c = new Client();
+			objeto.addClient(c);
 			int id = objeto.createPlayer();
 			System.out.println("player id: " + id);
 			
@@ -24,6 +31,7 @@ public class Client {
 			
 			while(objeto.getAllPlay()){
 				MainThreadClient m = new MainThreadClient(objeto, id);
+				
 				m.start();
 				
 				while(m.isAlive()){}
@@ -31,7 +39,7 @@ public class Client {
 				System.out.println("Resultados Finales:");
 		        System.out.println(objeto.displayFinalScores());
 				int res=0;
-				int reply = JOptionPane.showConfirmDialog(null, "¿Desea jugar una Revancha?", "Revancha", JOptionPane.YES_NO_OPTION);
+				int reply = JOptionPane.showConfirmDialog(null, "Â¿Desea jugar una Revancha?", "Revancha", JOptionPane.YES_NO_OPTION);
 				if (reply == JOptionPane.YES_OPTION) {
 					res=1;
 				}

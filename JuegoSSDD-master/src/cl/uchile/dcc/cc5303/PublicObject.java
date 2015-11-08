@@ -22,6 +22,8 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     private int numberOfPlayers;
     private final static int WIDTH = 800, HEIGHT = 600;
     
+    private ArrayList<Client> clients;
+    
     private boolean isReady;
     private boolean AllPlay;
     
@@ -66,6 +68,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         setReady(false);
         responses = new boolean[numberOfPlayers];
         countResponse = 0;
+        clients = new ArrayList<Client>();
         
     }
 
@@ -255,6 +258,11 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 			flag &= !player.stillLife();
 		}
 		return flag;
+	}
+
+	@Override
+	public void addClient(Client c) throws RemoteException{
+		clients.add(c);
 	}
 
 

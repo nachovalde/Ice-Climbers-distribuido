@@ -16,13 +16,13 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public static String gameName = "IceClimbers";	
 	
+	private static IPublicObject po;
+	
 	public String ip;
 	
 	public String url;
 	
 	public ArrayList<IServer> servers;
-	
-	public static IPublicObject po;
 	
 	public static String getURL(String ip){
 		return "rmi://"+ ip +":" + port + "/" + gameName;
@@ -84,6 +84,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 						}
 				}
 			}.setServer(s)).start();
+
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
 				Naming.rebind(s.getURL(s.ip), po);
@@ -124,7 +125,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 		        
 		}else
 		{
-			System.out.println("Deben ir tres argumentos: IP, -N NumeroDeVidas y -n NumeroDeJugadores");
+			System.out.println("Deben ir tres argumentos: IP, NumeroDeVidas y NumeroDeJugadores");
 		}
 	}
 	

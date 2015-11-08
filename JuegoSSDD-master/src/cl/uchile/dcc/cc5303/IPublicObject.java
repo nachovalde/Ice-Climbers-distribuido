@@ -47,4 +47,6 @@ public interface IPublicObject extends Remote{
 	
 	boolean gameOver() throws RemoteException;
 
+	void addClient(Client c) throws RemoteException;
+
 }
