@@ -20,7 +20,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public String url;
 	
-	public static ArrayList<IServer> servers;
+	public ArrayList<IServer> servers;
 	
 	public static String getURL(String ip){
 		return "rmi://"+ ip +":" + port + "/" + gameName;
@@ -35,7 +35,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 		this(ip);
 		String urlVecino = "rmi://"+ ipVecino +":" + port + "/server";
 		IServer nb = (IServer)Naming.lookup(urlVecino); 
-		servers.add(nb);
+		this.addServer(nb);
 		System.out.println("Registrando este servidor en la red...");
 		netRegister(this, nb);
 	}
@@ -50,9 +50,13 @@ public class Server extends UnicastRemoteObject implements IServer{
 			else
 				s = new Server(ip, args[3]);
 			System.out.println(s.url);
-			System.out.println(servers);
+			System.out.println(s.getServers());
 			int lifes = new Integer(args[1]);
 			int numberOfPlayers=new Integer(args[2]);
+			
+			System.setProperty("java.rmi.server.hostname", ip); 
+			Naming.rebind(s.url + "server", (IServer)s);
+			
 			IPublicObject po = new PublicObject(lifes, numberOfPlayers);
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
@@ -65,7 +69,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			Naming.rebind(s.url + "server", s);
 						
 			System.out.println("Esperando " + numberOfPlayers + " jugadores para empezar...");
 			while(po.getPlayers().size() != numberOfPlayers){
@@ -105,7 +108,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 
 	@Override
-	public ArrayList<IServer> addServer(IServer newServer) throws RemoteException{
+	public ArrayList<IServer> addServerToNeightbours(IServer newServer) throws RemoteException{
 		for (IServer neighbour : servers) {
 			ArrayList<IServer> nbs = neighbour.getServers();
 			nbs.add(newServer);
@@ -116,9 +119,9 @@ public class Server extends UnicastRemoteObject implements IServer{
 
 	@Override
 	public void netRegister(IServer server, IServer neighbour) throws RemoteException{
-		servers.add(neighbour);
-		ArrayList<IServer> otherServers = neighbour.addServer(server);
-		servers.addAll(otherServers);
+		ArrayList<IServer> otherServers = neighbour.addServerToNeightbours(server);
+		server.getServers().addAll(otherServers);
+		neighbour.addServer(server);
 	}
 
 	@Override
@@ -127,7 +130,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 
 	@Override
-	public IServer minLoadServer(ArrayList<IServer> servers) throws RemoteException {
+	public IServer minLoadServer() throws RemoteException {
 		// TODO Auto-generated method stub
 		return servers.get(0);
 	}
@@ -138,11 +141,22 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 	@Override
 	public ArrayList<IServer> getServers() throws RemoteException {
-		return this.servers;
+		return servers;
 	}
 	
 	@Override
 	public String toString() {
 		return ip;
+	}
+	@Override
+	public boolean addServer(IServer newServer) throws RemoteException {
+		try{
+			servers.add(newServer);
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
