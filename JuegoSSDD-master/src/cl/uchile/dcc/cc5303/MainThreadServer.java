@@ -55,6 +55,7 @@ public class MainThreadServer extends Thread {
             
             try {
                 this.sleep(1000 / UPDATE_RATE);
+
             } catch (InterruptedException ex) {
 
             }

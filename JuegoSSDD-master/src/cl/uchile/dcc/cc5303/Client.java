@@ -5,14 +5,27 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Scanner;
 
-public class Client {
-	
+public class Client extends UnicastRemoteObject implements IClient{
+
 	private static IPublicObject objeto;
+
 	
-	public Client() {
+	public Client() throws RemoteException{
 		super();
+	}
+
+	public void migrate(String ip) throws RemoteException{
+		try {
+			IPublicObject po = (IPublicObject)Naming.lookup(ip);
+			this.objeto=po;
+		} catch (NotBoundException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) throws InterruptedException {
