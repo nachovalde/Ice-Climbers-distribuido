@@ -31,7 +31,7 @@ public class Client {
 				System.out.println("Resultados Finales:");
 		        System.out.println(objeto.displayFinalScores());
 				int res=0;
-				int reply = JOptionPane.showConfirmDialog(null, "¿Desea jugar una Revancha?", "Revancha", JOptionPane.YES_NO_OPTION);
+				int reply = JOptionPane.showConfirmDialog(null, "Â¿Desea jugar una Revancha?", "Revancha", JOptionPane.YES_NO_OPTION);
 				if (reply == JOptionPane.YES_OPTION) {
 					res=1;
 				}
