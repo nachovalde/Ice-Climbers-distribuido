@@ -16,6 +16,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public static String gameName = "IceClimbers";	
 	
+	private static IPublicObject po;
+	
 	public String ip;
 	
 	public String url;
@@ -57,7 +59,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 			System.setProperty("java.rmi.server.hostname", ip); 
 			Naming.rebind(s.url + "server", (IServer)s);
 			
-			IPublicObject po = new PublicObject(lifes, numberOfPlayers);
+			po = new PublicObject(lifes, numberOfPlayers);
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
 				Naming.rebind(s.getURL(s.ip), po);
