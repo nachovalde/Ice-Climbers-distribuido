@@ -49,4 +49,14 @@ public interface IPublicObject extends Remote{
 
 	void addClient(Client c) throws RemoteException;
 
+	void migrate(IServer newServer) throws RemoteException;
+
+	IPublicObject makeClone()  throws RemoteException;
+
+	void setPlayers(ArrayList<Player> players) throws RemoteException;
+
+	void setLastPlayer(int lastPlayer) throws RemoteException;
+
+	void setBenches(Bench[] benches) throws RemoteException;
+
 }

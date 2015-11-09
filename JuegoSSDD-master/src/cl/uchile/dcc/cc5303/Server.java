@@ -78,7 +78,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 							try {
 								Thread.sleep(100);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						}
@@ -90,10 +89,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 				Naming.rebind(s.getURL(s.ip), po);
 				System.out.println("Objeto publicado en "+s.url);
 			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 						
@@ -130,10 +127,15 @@ public class Server extends UnicastRemoteObject implements IServer{
 	}
 	
 	public void migrate() {
-		IServer newServer = minLoadServer();
+		IServer newServer = null;
+		try {
+			newServer = minLoadServer();
+		} catch (RemoteException e1) {
+			e1.printStackTrace();
+		}
 		try {
 			//TODO Aqui deberia agregar nacho las firmas correctas de los metodos de po xD
-			newServer.setPublicObject(po.makeClone());
+			newServer.setPublicObjects(po.makeClone());
 			po.migrate(newServer);
 		} catch(RemoteException e) {
 			e.printStackTrace();

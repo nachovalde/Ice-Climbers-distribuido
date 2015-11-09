@@ -187,6 +187,11 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	public void setPlayers(ArrayList<Player> players) throws RemoteException{
 		this.players = players;
 	}
+	
+	@Override
+	public void setLastPlayer(int lastPlayer) throws RemoteException {
+		this.lastPlayer = lastPlayer;
+	}
 
 	public void setReady(boolean isReady) throws RemoteException{
 		this.isReady = isReady;
@@ -265,6 +270,32 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 		clients.add(c);
 	}
 
+	@Override
+	public void migrate(IServer newServer) throws RemoteException {
+		for(IClient client:clients){
+			client.migrate(Server.getURL(newServer.getIp()));
+		}
+	}
+
+	@Override
+	public IPublicObject makeClone() throws RemoteException {
+		IPublicObject newPO = new PublicObject(this.lifes, this.numberOfPlayers);
+		//Clonar Players
+		ArrayList<Player> players = new ArrayList<Player>();
+		for(Player player:this.players){
+			players.add(player.makeClone());
+		}
+		newPO.setPlayers(players);
+		//Update LastPlayer
+		newPO.setLastPlayer(this.lastPlayer);
+		//Clonar Benches
+		Bench[] benches = new Bench[this.benches.length];
+		for (int i = 0; i < benches.length; i++) {
+			benches[i] = this.benches[i].makeClone();
+		}
+		newPO.setBenches(benches);
+		return null;
+	}
 
 
 

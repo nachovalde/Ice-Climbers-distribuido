@@ -178,4 +178,9 @@ public class Player implements Serializable, Comparable<Player>{
 	public int compareTo(Player o) {
 		return -Long.compare(score, o.getScore());
 	}
+
+	public Player makeClone() {
+		Player newPlayer = new Player(this.x, this.y, this.vida, this.ButtonUp, this.ButtonRight, this.ButtonLeft, this.color);
+		return newPlayer;
+	}
 }

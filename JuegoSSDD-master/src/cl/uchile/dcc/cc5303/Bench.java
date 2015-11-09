@@ -54,5 +54,10 @@ public class Bench implements Serializable{
         return level;
     }
 
+	public Bench makeClone() {
+		Bench newBench = new Bench(this.posX, this.w, this.level);
+		return newBench;
+	}
+
 
 }
