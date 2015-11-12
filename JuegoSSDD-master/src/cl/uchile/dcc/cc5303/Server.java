@@ -100,7 +100,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 	                Thread.sleep(1000/60);
 	            } catch (InterruptedException ex) {}
 			}
-			
 			po.setAllPlay(true);
 			while(po.getAllPlay()){
 				System.out.println("Iniciando Juego de SSDD...");
@@ -172,7 +171,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	@Override
 	public IServer minLoadServer() throws RemoteException {
 		double min = Double.MAX_VALUE;
-		IServer resultado = null;
+		IServer resultado = this;
 		for(IServer s : servers){
 			try{
 				double load= s.getLoad();

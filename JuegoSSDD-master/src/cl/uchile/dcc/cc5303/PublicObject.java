@@ -22,7 +22,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     private int numberOfPlayers;
     private final static int WIDTH = 800, HEIGHT = 600;
     
-    private ArrayList<Client> clients;
+    private ArrayList<IClient> clients;
     
     private boolean isReady;
     private boolean AllPlay;
@@ -68,7 +68,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         setReady(false);
         responses = new boolean[numberOfPlayers];
         countResponse = 0;
-        clients = new ArrayList<Client>();
+        clients = new ArrayList<IClient>();
         
     }
 
@@ -266,7 +266,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	}
 
 	@Override
-	public void addClient(Client c) throws RemoteException{
+	public void addClient(IClient c) throws RemoteException{
 		clients.add(c);
 	}
 
@@ -294,7 +294,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 			benches[i] = this.benches[i].makeClone();
 		}
 		newPO.setBenches(benches);
-		return null;
+		return newPO;
 	}
 
 

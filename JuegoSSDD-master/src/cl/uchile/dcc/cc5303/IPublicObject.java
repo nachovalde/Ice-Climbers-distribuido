@@ -47,7 +47,7 @@ public interface IPublicObject extends Remote{
 	
 	boolean gameOver() throws RemoteException;
 
-	void addClient(Client c) throws RemoteException;
+	void addClient(IClient c) throws RemoteException;
 
 	void migrate(IServer newServer) throws RemoteException;
 

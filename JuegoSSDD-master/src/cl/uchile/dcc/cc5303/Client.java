@@ -9,6 +9,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class Client extends UnicastRemoteObject implements IClient{
 
+	private static final long serialVersionUID = 1L;
 	private static IPublicObject objeto;
 
 	
@@ -35,7 +36,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 			System.out.println(Server.getURL(ip));
 			objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
 			Client c = new Client();
-			objeto.addClient(c);
+			objeto.addClient((IClient)c);
 			int id = objeto.createPlayer();
 			System.out.println("player id: " + id);
 			
