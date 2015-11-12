@@ -180,7 +180,7 @@ public class Player implements Serializable, Comparable<Player>{
 	}
 
 	public Player makeClone() {
-		Player newPlayer = new Player(this.x, this.y, this.vida, this.ButtonUp, this.ButtonRight, this.ButtonLeft, this.color);
+		Player newPlayer = new Player(this.posX, this.posY, this.vida, this.ButtonUp, this.ButtonRight, this.ButtonLeft, this.color);
 		return newPlayer;
 	}
 }
