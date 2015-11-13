@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 
 public class Server extends UnicastRemoteObject implements IServer{
@@ -56,19 +57,18 @@ public class Server extends UnicastRemoteObject implements IServer{
 				s = new Server(ip, lifes, numberOfPlayers, args[3]);
 			System.out.println(s.url);
 			System.out.println(s.getServers());
-			
-			
+
 			System.setProperty("java.rmi.server.hostname", ip); 
 			Naming.rebind(s.url + "server", (IServer)s);
 			
 			new Thread(new Runnable() {
-				Server server;
-				Runnable setServer(Server server) {
-					this.server=server;
-					return this;
-				}
-				@Override
-				public void run() {
+					Server server;
+					Runnable setServer(Server server) {
+						this.server=server;
+						return this;
+					}
+					@Override
+					public void run() {
 						while(true){
 							double load = CpuData.getCpuUsage();
 							if (load >0.70 && server.servers.size()>0){
@@ -81,8 +81,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 								e.printStackTrace();
 							}
 						}
-				}
-			}.setServer(s)).start();
+					}
+				}.setServer(s)).start();
 
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
@@ -215,6 +215,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 	public boolean setPublicObjects(IPublicObject po) throws RemoteException {
 		try{
 			this.po = po;
+			System.setProperty("java.rmi.server.hostname", ip); 
+			Naming.rebind(this.getURL(this.ip), this.po);
 			return true;
 		}
 		catch (Exception e) {
