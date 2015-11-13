@@ -56,6 +56,7 @@ public class Bench implements Serializable{
 
 	public Bench makeClone() {
 		Bench newBench = new Bench(this.posX, this.w, this.level);
+		newBench.posY = this.posY;
 		return newBench;
 	}
 

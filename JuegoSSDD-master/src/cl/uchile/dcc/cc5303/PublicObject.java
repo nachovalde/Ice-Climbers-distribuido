@@ -279,7 +279,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
 	@Override
 	public IPublicObject makeClone() throws RemoteException {
-		IPublicObject newPO = new PublicObject(this.lifes, this.numberOfPlayers);
+		PublicObject newPO = new PublicObject(this.lifes, this.numberOfPlayers);
 		//Clonar Players
 		ArrayList<Player> players = new ArrayList<Player>();
 		for(Player player:this.players){
@@ -294,7 +294,17 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 			benches[i] = this.benches[i].makeClone();
 		}
 		newPO.setBenches(benches);
-		return newPO;
+
+	    newPO.isReady = this.isReady;
+	    newPO.AllPlay = this.AllPlay;
+	    //Clonar Clientes (?)
+		ArrayList<IClient> oldClients = new ArrayList<IClient>();
+		for(IClient client:clients){
+			oldClients.add(client.makeClone());
+		}
+		newPO.clients = oldClients ;
+	    
+		return (IPublicObject)newPO;
 	}
 
 

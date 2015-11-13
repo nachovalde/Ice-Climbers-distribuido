@@ -71,7 +71,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 				public void run() {
 						while(true){
 							double load = CpuData.getCpuUsage();
-							if (load >0.70){
+							if (load >0.70 && server.servers.size()>0){
 								server.migrate();
 								break;
 							}
@@ -101,6 +101,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	            } catch (InterruptedException ex) {}
 			}
 			po.setAllPlay(true);
+			s.migrate();
 			while(po.getAllPlay()){
 				System.out.println("Iniciando Juego de SSDD...");
 				
@@ -133,7 +134,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 			e1.printStackTrace();
 		}
 		try {
-			//TODO Aqui deberia agregar nacho las firmas correctas de los metodos de po xD
+			System.out.println("migrando a server: " + newServer.getIp());
 			newServer.setPublicObjects(po.makeClone());
 			po.migrate(newServer);
 		} catch(RemoteException e) {

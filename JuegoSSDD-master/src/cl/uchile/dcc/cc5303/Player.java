@@ -181,6 +181,9 @@ public class Player implements Serializable, Comparable<Player>{
 
 	public Player makeClone() {
 		Player newPlayer = new Player(this.posX, this.posY, this.vida, this.ButtonUp, this.ButtonRight, this.ButtonLeft, this.color);
+		newPlayer.id = this.id;
+		newPlayer.score = this.score;
+		newPlayer.standUp = this.standUp;
 		return newPlayer;
 	}
 }

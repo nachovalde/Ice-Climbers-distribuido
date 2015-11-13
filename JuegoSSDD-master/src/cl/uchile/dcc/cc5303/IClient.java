@@ -8,4 +8,6 @@ import java.rmi.RemoteException;
  */
 public interface IClient extends Remote {
    void migrate(String ip) throws RemoteException;
+
+   IClient makeClone() throws RemoteException;
 }

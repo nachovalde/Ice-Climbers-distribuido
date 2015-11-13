@@ -11,15 +11,17 @@ public class Client extends UnicastRemoteObject implements IClient{
 
 	private static final long serialVersionUID = 1L;
 	private static IPublicObject objeto;
+	private static int id;
 
 	
 	public Client() throws RemoteException{
 		super();
 	}
 
-	public void migrate(String ip) throws RemoteException{
+	public void migrate(String url) throws RemoteException{
 		try {
-			IPublicObject po = (IPublicObject)Naming.lookup(ip);
+			System.out.println("Cliente " + this.id + " migra con PO en: " + url);
+			IPublicObject po = (IPublicObject)Naming.lookup(url);
 			this.objeto=po;
 		} catch (NotBoundException e) {
 			e.printStackTrace();
@@ -37,7 +39,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 			objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
 			Client c = new Client();
 			objeto.addClient((IClient)c);
-			int id = objeto.createPlayer();
+			id = objeto.createPlayer();
 			System.out.println("player id: " + id);
 			
 			while(!objeto.isReady()){}
@@ -81,6 +83,13 @@ public class Client extends UnicastRemoteObject implements IClient{
 			System.exit(0);
 		}
 		
+	}
+
+	@Override
+	public IClient makeClone() throws RemoteException {
+		Client newClient = new Client();
+		newClient.id = this.id;
+		return newClient;
 	}
 
 }
