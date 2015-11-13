@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 
 public class Server extends UnicastRemoteObject implements IServer{
@@ -56,8 +57,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 				s = new Server(ip, lifes, numberOfPlayers, args[3]);
 			System.out.println(s.url);
 			System.out.println(s.getServers());
-			
-			
+
 			System.setProperty("java.rmi.server.hostname", ip); 
 			Naming.rebind(s.url + "server", (IServer)s);
 			
@@ -69,18 +69,18 @@ public class Server extends UnicastRemoteObject implements IServer{
 				}
 				@Override
 				public void run() {
-						while(true){
-							double load = CpuData.getCpuUsage();
-							if (load >0.70){
-								server.migrate();
-								break;
-							}
-							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
+					while(true){
+						double load = CpuData.getCpuUsage();
+						if (load >0.70 && server.servers.size()>0){
+							server.migrate();
+							break;
 						}
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}.setServer(s)).start();
 

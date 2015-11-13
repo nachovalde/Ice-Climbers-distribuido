@@ -17,9 +17,9 @@ public class Client extends UnicastRemoteObject implements IClient{
 		super();
 	}
 
-	public void migrate(String ip) throws RemoteException{
+	public void migrate(String url) throws RemoteException{
 		try {
-			IPublicObject po = (IPublicObject)Naming.lookup(ip);
+			IPublicObject po = (IPublicObject)Naming.lookup(url);
 			this.objeto=po;
 		} catch (NotBoundException e) {
 			e.printStackTrace();
@@ -64,9 +64,6 @@ public class Client extends UnicastRemoteObject implements IClient{
 				objeto.waitResponses();
 				while(!objeto.isReady()){}
 			}
-			
-			
-			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

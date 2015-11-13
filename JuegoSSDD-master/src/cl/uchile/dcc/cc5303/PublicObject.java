@@ -68,7 +68,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         setReady(false);
         responses = new boolean[numberOfPlayers];
         countResponse = 0;
-        clients = new ArrayList<IClient>();
+        clients = new ArrayList<IClient>(numberOfPlayers);
         
     }
 
@@ -99,7 +99,13 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         Player p = new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
         lastPlayer++;
         p.setId(players.size());
-        players.add(p);
+        if (players.size()<numberOfPlayers){
+            players.add(p);
+        }else {
+            IndexOutOfBoundsException exception = new IndexOutOfBoundsException();
+            throw exception;
+        }
+
 	}
 
 	public void checkCollisionAllPlayers() throws RemoteException{
