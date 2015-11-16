@@ -12,4 +12,6 @@ public interface IClient extends Remote {
    IClient makeClone() throws RemoteException;
 
    int getId() throws RemoteException;
+
+   void setId(int id) throws  RemoteException;
 }

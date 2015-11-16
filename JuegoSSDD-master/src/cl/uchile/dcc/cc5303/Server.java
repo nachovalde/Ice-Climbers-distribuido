@@ -23,6 +23,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	public String url;
 	
 	public ArrayList<IServer> servers;
+	public static ArrayList<IClient> clients;
 	
 	public static String getURL(String ip){
 		return "rmi://"+ ip +":" + port + "/" + gameName;
@@ -31,6 +32,12 @@ public class Server extends UnicastRemoteObject implements IServer{
 		this.ip = ip;
 		this.url = "rmi://"+ ip +":" + port + "/";
 		this.servers = new ArrayList<IServer>();
+		this.clients= new ArrayList<IClient>();
+		for (int i = 0; i < numberOfPlayers; i++) {
+			Client c=new Client();
+			c.setId(i);
+			clients.add(c);
+		}
 		this.po = new PublicObject(lifes, numberOfPlayers);
 	}
 	
@@ -56,7 +63,10 @@ public class Server extends UnicastRemoteObject implements IServer{
 				s = new Server(ip, lifes, numberOfPlayers, args[3]);
 			System.out.println(s.url);
 			System.out.println(s.getServers());
-
+			for (IClient c : clients){
+				System.setProperty("java.rmi.server.hostname", ip);
+				Naming.rebind(s.getURL(s.getIp())+"client/"+c.getId(),c);
+			}
 			System.setProperty("java.rmi.server.hostname", ip); 
 			Naming.rebind(s.url + "server", (IServer)s);
 			

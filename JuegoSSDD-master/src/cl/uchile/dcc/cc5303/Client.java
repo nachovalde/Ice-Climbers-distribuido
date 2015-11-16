@@ -12,6 +12,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 	private static final long serialVersionUID = 1L;
 	private static IPublicObject objeto;
 
+
 	private static int id;
 
 	
@@ -31,6 +32,10 @@ public class Client extends UnicastRemoteObject implements IClient{
 	}
 	public int getId() throws RemoteException{
 		return id;
+	}
+
+	public void setId(int id) throws RemoteException{
+		this.id = id;
 	}
 
 	public static void main(String[] args) throws InterruptedException {
