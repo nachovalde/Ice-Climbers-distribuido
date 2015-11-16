@@ -40,11 +40,11 @@ public class Client extends UnicastRemoteObject implements IClient{
 			System.setProperty("java.rmi.server.hostname", ip); 
 			System.out.println(Server.getURL(ip));
 			objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
-			Client c = new Client();
-			objeto.addClient((IClient)c);
-			Naming.rebind(Server.getURL(ip) + "client/" + c.getId(), (IClient) c);
 			id = objeto.createPlayer();
 			System.out.println("player id: " + id);
+			Client c = (Client) Naming.lookup(Server.getURL(ip) + "client/" + id);
+			c.setId(id);
+			objeto.addClient((IClient)c);
 			
 			while(!objeto.isReady()){}
 			
@@ -83,6 +83,11 @@ public class Client extends UnicastRemoteObject implements IClient{
 			System.out.println("No se puede agregar mas jugadores!");
 			System.exit(0);
 		}
+		
+	}
+
+	private void setId(int id) {
+		this.id = id;
 		
 	}
 
