@@ -2,6 +2,9 @@ package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -277,9 +280,16 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	}
 
 	@Override
-	public void migrate(IServer newServer) throws RemoteException {
+	public void migrate(IServer newServer, String ipOld) throws RemoteException {
 		for(IClient client:clients){
-			client.migrate(Server.getURL(newServer.getIp()));
+			try {
+				IClient client2 = (IClient) Naming.lookup(Server.getURL(ipOld)+"client/"+client.getId());
+				client2.migrate(Server.getURL(newServer.getIp()));
+			} catch (NotBoundException e) {
+				e.printStackTrace();
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

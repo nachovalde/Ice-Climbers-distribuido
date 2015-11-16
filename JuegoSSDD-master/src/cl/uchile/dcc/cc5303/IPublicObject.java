@@ -49,7 +49,7 @@ public interface IPublicObject extends Remote{
 
 	void addClient(IClient c) throws RemoteException;
 
-	void migrate(IServer newServer) throws RemoteException;
+	void migrate(IServer newServer, String ipOld) throws RemoteException;
 
 	IPublicObject makeClone()  throws RemoteException;
 

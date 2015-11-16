@@ -11,6 +11,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 
 	private static final long serialVersionUID = 1L;
 	private static IPublicObject objeto;
+
 	private static int id;
 
 	
@@ -28,6 +29,9 @@ public class Client extends UnicastRemoteObject implements IClient{
 			e.printStackTrace();
 		}
 	}
+	public int getId() throws RemoteException{
+		return id;
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -38,6 +42,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 			objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
 			Client c = new Client();
 			objeto.addClient((IClient)c);
+			Naming.rebind(Server.getURL(ip) + "client/" + c.getId(), (IClient) c);
 			id = objeto.createPlayer();
 			System.out.println("player id: " + id);
 			
