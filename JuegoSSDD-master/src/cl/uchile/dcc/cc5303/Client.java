@@ -91,11 +91,6 @@ public class Client extends UnicastRemoteObject implements IClient{
 		
 	}
 
-	private void setId(int id) {
-		this.id = id;
-		
-	}
-
 	@Override
 	public IClient makeClone() throws RemoteException {
 		Client newClient = new Client();
