@@ -1,4 +1,4 @@
-if [ -z "$1" ]
+﻿if [ -z "$1" ]
   then echo "Debe ingresar la IP del servidor donde conectarse."
   exit
 fi
@@ -27,9 +27,9 @@ rmiregistry &
 echo "Iniciando servidor"
 if [ -z "$4" ]; then
   echo "server inicial"
-  java -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3
+  java -classpath jar/sigar.jar -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3
   exit
 else
-  java -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3 $4
+  java -classpath jar/sigar.jar -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3 $4
   exit
 fi

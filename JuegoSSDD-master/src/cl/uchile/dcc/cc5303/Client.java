@@ -90,7 +90,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 	public IClient makeClone() throws RemoteException {
 		Client newClient = new Client();
 		newClient.id = this.id;
-		return newClient;
+		return (IClient)newClient;
 	}
 
 }

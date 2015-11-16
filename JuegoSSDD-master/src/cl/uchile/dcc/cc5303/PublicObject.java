@@ -313,12 +313,12 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
 	    newPO.isReady = this.isReady;
 	    newPO.AllPlay = this.AllPlay;
-	    //Clonar Clientes (?)
+	    /* Clonar Clientes (?)
 		ArrayList<IClient> oldClients = new ArrayList<IClient>();
 		for(IClient client:clients){
 			oldClients.add(client.makeClone());
-		}
-		newPO.clients = oldClients ;
+		}*/
+		newPO.clients = this.clients ;
 	    
 		return (IPublicObject)newPO;
 	}

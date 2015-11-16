@@ -6,7 +6,6 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.prefs.Preferences;
 
 
 public class Server extends UnicastRemoteObject implements IServer{
