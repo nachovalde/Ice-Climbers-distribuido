@@ -80,7 +80,8 @@ public class Client extends UnicastRemoteObject implements IClient{
 				m.start();
 				
 				while(m.isAlive()){}
-				while(!objeto.gameOver()){}
+				while(!c.getObjeto().gameOver()){}
+				objeto = c.getObjeto();
 				System.out.println("Resultados Finales:");
 		        System.out.println(objeto.displayFinalScores());
 				int res=0;

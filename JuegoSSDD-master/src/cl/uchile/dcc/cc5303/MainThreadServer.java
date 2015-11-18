@@ -22,8 +22,8 @@ public class MainThreadServer extends Thread {
 				        if (p.hit(barra)) {
 				            p.speed = 0.8;
 				        }else if (p.collide(barra)) {
-							System.out.println("jugador "+p.getId()+" piso barra "+barra.getLevel());
-							p.speed = 0.01;
+				        	System.out.println("jugador "+ p.getId() + " piso barra de nivel: " + barra.getLevel());
+				            p.speed = 0.01;
 				            p.standUp = true;
 				            if (barra.getLevel() > 2){
 				                levelsDown = true;
@@ -55,7 +55,7 @@ public class MainThreadServer extends Thread {
 			}
             
             try {
-                this.sleep(1000 / UPDATE_RATE);
+                Thread.sleep(1000 / UPDATE_RATE);
 
             } catch (InterruptedException ex) {
 
@@ -68,7 +68,7 @@ public class MainThreadServer extends Thread {
 			e.printStackTrace();
 		}
 		try {
-            this.sleep(1000);
+            Thread.sleep(1000);
         } catch (InterruptedException ex) {
 
         }

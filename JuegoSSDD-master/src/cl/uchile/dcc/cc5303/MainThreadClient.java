@@ -78,7 +78,11 @@ public class MainThreadClient extends Thread implements Serializable{
         	try {
 				if (client.getMigrated()){
 					client.setMigrated(false);
-					this.migrate(client.getObjeto());
+					IPublicObject obj = client.getObjeto();
+					this.migrate(obj);
+					tablero.setBenches(obj.getPublicBench());
+					tablero.setPlayers(obj.getPlayers());
+					System.out.println("He migrado");
 				}
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
@@ -90,6 +94,7 @@ public class MainThreadClient extends Thread implements Serializable{
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
+            System.out.println("player: " + p.getId() + " tiene velocidad: " + p.speed);
             if (keys[p.ButtonUp]) {
                 p.jump();
             }
@@ -116,7 +121,7 @@ public class MainThreadClient extends Thread implements Serializable{
             }
             tablero.repaint();
             try {
-                this.sleep(1000 / UPDATE_RATE);
+                Thread.sleep(1000 / UPDATE_RATE);
             } catch (InterruptedException ex) {
 
             }
