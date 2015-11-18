@@ -147,12 +147,6 @@ public class Player implements Serializable, Comparable<Player>{
 		this.posX = new_posX;
 		this.posY = new_posY;
 	}
-    public boolean collideUpper(Bench bench){
-        if (bench.top()>this.bottom()){
-            return true;
-        }
-        return false;
-    }
 
     public long getScore() {
         return score;

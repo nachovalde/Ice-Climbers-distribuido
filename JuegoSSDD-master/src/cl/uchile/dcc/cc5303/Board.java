@@ -66,60 +66,6 @@ public class Board extends Canvas implements Remote {
         return ret;
     }
 
-    public void levelsDown() {
-        for(Bench base: bases) {
-            base.levelDown(levels);
-        }
-        for(Player p : players ){
-        	p.levelDown();
-        }
-    }
-
-	public boolean playerDie() {
-		//mejorar busqueda de bases de lvl 0
-		Bench aux = null;
-		for (int i = 0; i < bases.length; i++) {
-			if(bases[i].level == 0)
-			{
-				aux = bases[i];
-				break;
-			}
-		}
-
-		for(Player p : players){
-			if( p.loseLife(height) )
-			{
-				if( Math.abs(p.posX - aux.posX) < Math.abs(p.posX - (aux.posX+aux.w) ) )
-				{
-					p.reubicar(aux.posX + 2, aux.posY - 20);
-				}else
-				{
-					p.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
-				}
-			}
-		}
-		boolean res = true;
-		for(Player p: players){
-			res = res && p.stillLife();
-		}
-		//Arreglar: se termina si un solo jugador perdio
-		return !res;
-
-	}
-
-    public void checkCollisionAllPlayers(){
-        for (Player p : players){
-            this.checkCollision(p,players.indexOf(p));
-        }
-    }
-
-    private void checkCollision(Player p, int i) {
-        for (int j = i; j < players.size(); j++) {
-            if (p.collideWithPlayer(players.get(j))){
-                p.rebounding(players.get(j));
-            }
-        }
-    }
     public void addPlayer(Player player) {
         players.add(player);
 	}

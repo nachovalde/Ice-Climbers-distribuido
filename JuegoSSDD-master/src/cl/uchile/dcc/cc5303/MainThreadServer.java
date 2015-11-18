@@ -22,7 +22,8 @@ public class MainThreadServer extends Thread {
 				        if (p.hit(barra)) {
 				            p.speed = 0.8;
 				        }else if (p.collide(barra)) {
-				            p.speed = 0.01;
+							System.out.println("jugador "+p.getId()+" piso barra "+barra.getLevel());
+							p.speed = 0.01;
 				            p.standUp = true;
 				            if (barra.getLevel() > 2){
 				                levelsDown = true;

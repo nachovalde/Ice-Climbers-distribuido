@@ -160,13 +160,6 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
             if( p.loseLife(HEIGHT) )
             {
             	p.reubicar(randInt(aux.posX,aux.posX+aux.w),aux.posY - 20);
-                /*if( Math.abs(p.posX - aux.posX) < Math.abs(p.posX - (aux.posX+aux.w) ) )
-                {
-                    p.reubicar(aux.posX + 2, aux.posY - 20);
-                }else
-                {
-                    p.reubicar(aux.posX + aux.w - 10, aux.posY - 20);
-                }*/
             }
         }
         int res = 0;
@@ -313,11 +306,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
 	    newPO.isReady = this.isReady;
 	    newPO.AllPlay = this.AllPlay;
-	    /* Clonar Clientes (?)
-		ArrayList<IClient> oldClients = new ArrayList<IClient>();
-		for(IClient client:clients){
-			oldClients.add(client.makeClone());
-		}*/
+
 		newPO.clients = this.clients ;
 	    
 		return (IPublicObject)newPO;
