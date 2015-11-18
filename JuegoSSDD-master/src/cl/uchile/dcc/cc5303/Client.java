@@ -13,7 +13,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 	private static IPublicObject objeto;
 
 
-	private static int id;
+	private int id;
 
 	
 	public Client() throws RemoteException{
@@ -45,11 +45,11 @@ public class Client extends UnicastRemoteObject implements IClient{
 			System.setProperty("java.rmi.server.hostname", ip); 
 			System.out.println(Server.getURL(ip));
 			objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
-			id = objeto.createPlayer();
+			int id = objeto.createPlayer();
 			System.out.println("player id: " + id);
-			Client c = (Client) Naming.lookup(Server.getURL(ip) + "client/" + id);
+			IClient c = (IClient) Naming.lookup(Server.getURL(ip) + "client/" + id);
 			c.setId(id);
-			objeto.addClient((IClient)c);
+			objeto.addClient(c);
 			
 			while(!objeto.isReady()){}
 			

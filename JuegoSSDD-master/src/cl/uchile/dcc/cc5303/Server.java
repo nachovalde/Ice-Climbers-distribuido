@@ -63,9 +63,9 @@ public class Server extends UnicastRemoteObject implements IServer{
 				s = new Server(ip, lifes, numberOfPlayers, args[3]);
 			System.out.println(s.url);
 			System.out.println(s.getServers());
-			for (IClient c : clients){
+			for (IClient c : s.clients){
 				System.setProperty("java.rmi.server.hostname", ip);
-				Naming.rebind(s.getURL(s.getIp())+"client/"+c.getId(),c);
+				Naming.rebind(s.getURL(s.getIp())+"client/"+c.getId(),c);				
 			}
 			System.setProperty("java.rmi.server.hostname", ip); 
 			Naming.rebind(s.url + "server", (IServer)s);
@@ -110,7 +110,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 	            } catch (InterruptedException ex) {}
 			}
 			po.setAllPlay(true);
-			s.migrate();
 			while(po.getAllPlay()){
 				System.out.println("Iniciando Juego de SSDD...");
 				
@@ -146,7 +145,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 			System.out.println("migrando a server: " + newServer.getIp());
 			newServer.setPublicObjects(po.makeClone());
 			po.migrate(newServer, this.getIp());
-			this.po=null;
 		} catch(RemoteException e) {
 			e.printStackTrace();
 		}
