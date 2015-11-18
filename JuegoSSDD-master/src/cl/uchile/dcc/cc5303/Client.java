@@ -36,7 +36,7 @@ public class Client extends UnicastRemoteObject implements IClient{
 			IPublicObject po = (IPublicObject)Naming.lookup(url);
 			this.setObjeto(po);
 			migrated = true;
-			System.out.println("Se cambió la referencia");
+			System.out.println("Se cambio la referencia");
 		} catch (NotBoundException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
