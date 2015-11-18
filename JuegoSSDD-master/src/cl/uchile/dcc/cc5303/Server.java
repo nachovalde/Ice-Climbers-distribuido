@@ -114,25 +114,24 @@ public class Server extends UnicastRemoteObject implements IServer{
 	                Thread.sleep(1000/60);
 	            } catch (InterruptedException ex) {}
 			}
-			IPublicObject po = s.po;
-			po.setAllPlay(true);
-			while(po.getAllPlay()){
+			s.po.setAllPlay(true);
+			while(s.po.getAllPlay()){
 				System.out.println("Iniciando Juego de SSDD...");
 				
-				po.init();
+				s.po.init();
 				
-			    MainThreadServer m = new MainThreadServer(po);
+			    MainThreadServer m = new MainThreadServer(s.po);
 			    m.start();
-			    po.setReady(true);
+			    s.po.setReady(true);
 			    while(m.isAlive()){}
-			    po.setReady(false);
+			    s.po.setReady(false);
 			    
 			    System.out.println("Esperando Respuesta");
-			    po.waitResponses();
+			    s.po.waitResponses();
 			    
-			    po.setAllPlay(po.responseAllPlayer());
+			    s.po.setAllPlay(s.po.responseAllPlayer());
 			}
-			po.setReady(true);
+			s.po.setReady(true);
 		        
 		}else
 		{

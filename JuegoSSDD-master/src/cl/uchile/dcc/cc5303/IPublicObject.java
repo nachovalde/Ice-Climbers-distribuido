@@ -58,5 +58,8 @@ public interface IPublicObject extends Remote{
 	void setLastPlayer(int lastPlayer) throws RemoteException;
 
 	void setBenches(Bench[] benches) throws RemoteException;
+	
+	String getName() throws RemoteException;
+	void setName(String name) throws RemoteException;
 
 }

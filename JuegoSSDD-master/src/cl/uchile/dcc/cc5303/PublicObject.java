@@ -29,6 +29,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     
     private boolean isReady;
     private boolean AllPlay;
+    public String name;
     
     private boolean[] responses;
     private int countResponse;
@@ -72,7 +73,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         responses = new boolean[numberOfPlayers];
         countResponse = 0;
         clients = new ArrayList<IClient>(numberOfPlayers);
-        
+        name = "";
     }
 
     public ArrayList<Player> getPublicPlayers() throws RemoteException{
@@ -314,6 +315,16 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 		newPO.clients = this.clients ;
 	    
 		return (IPublicObject)newPO;
+	}
+
+	@Override
+	public String getName() throws RemoteException {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) throws RemoteException {
+		this.name = name;
 	}
 
 

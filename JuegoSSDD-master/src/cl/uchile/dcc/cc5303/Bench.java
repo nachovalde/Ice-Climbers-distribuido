@@ -59,6 +59,10 @@ public class Bench implements Serializable{
 		newBench.posY = this.posY;
 		return newBench;
 	}
+	@Override
+	public String toString() {
+		return "level: " + level + "    ( "+posX+", "+posY+" )";
+	}
 
 
 }

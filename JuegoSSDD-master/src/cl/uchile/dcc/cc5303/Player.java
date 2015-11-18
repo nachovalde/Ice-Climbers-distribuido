@@ -61,7 +61,7 @@ public class Player implements Serializable, Comparable<Player>{
 
     @Override
     public String toString(){
-        return "player "+ id +": Score " + score;
+        return "player "+ id +": Score " + score + " pos: ( " + posX + ", "+ posY + " )";
     }
 
     public boolean collide(Bench b){
