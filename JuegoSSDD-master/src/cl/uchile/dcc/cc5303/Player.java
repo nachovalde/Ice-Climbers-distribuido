@@ -180,4 +180,12 @@ public class Player implements Serializable, Comparable<Player>{
 		newPlayer.standUp = this.standUp;
 		return newPlayer;
 	}
+
+	public void setSpeed(double d) {
+		speed = d;
+	}
+
+	public void setStandUp(boolean b) {
+		standUp = b;
+	}
 }

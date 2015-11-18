@@ -85,10 +85,6 @@ public class MainThreadClient extends Thread implements Serializable{
 					tablero.setPlayers(obj.getPlayers());
 					System.out.println("He migrado");
 					System.out.println("player: " + p.getId() + " tiene velocidad: " + p.speed);
-					System.out.println(objeto.getPlayers().get(0));
-		            for (int i = 0; i < tablero.bases.length; i++) {
-		            	System.out.println(tablero.bases[i]);
-					}
 				}
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block

@@ -150,6 +150,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 			System.out.println("migrando a server: " + newServer.getIp());
 			newServer.setPublicObjects(po.makeClone());
 			po.migrate(newServer, this.getIp());
+			po = new PublicObject(5, clients.size());
 		} catch(RemoteException e) {
 			e.printStackTrace();
 		}

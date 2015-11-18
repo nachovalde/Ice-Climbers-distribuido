@@ -22,13 +22,13 @@ public class MainThreadServer extends Thread {
 				        if (p.hit(barra)) {
 				            p.speed = 0.8;
 				        }else if (p.collide(barra)) {
-				        	System.out.println("jugador "+ p.getId() + " piso barra de nivel: " + barra.getLevel());
-				            p.speed = 0.01;
-				            p.standUp = true;
+				            p.setSpeed(0.01);
+				            p.setStandUp(true);
 				            if (barra.getLevel() > 2){
 				                levelsDown = true;
 				            }
 				        }
+				        po.updatePlayer(p.getId(), p);
 					}
 				    po.checkCollisionAllPlayers();
 				}
