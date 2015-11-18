@@ -14,4 +14,12 @@ public interface IClient extends Remote {
    int getId() throws RemoteException;
 
    void setId(int id) throws  RemoteException;
+   
+   public IPublicObject getObjeto() throws RemoteException;
+
+	public void setObjeto(IPublicObject obj) throws RemoteException;
+
+	public boolean getMigrated() throws RemoteException;
+
+	public void setMigrated(boolean hasMigrated) throws RemoteException;
 }

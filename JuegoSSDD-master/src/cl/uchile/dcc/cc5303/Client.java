@@ -10,20 +10,33 @@ import java.rmi.server.UnicastRemoteObject;
 public class Client extends UnicastRemoteObject implements IClient{
 
 	private static final long serialVersionUID = 1L;
-	private static IPublicObject objeto;
+	private IPublicObject objeto;
 
+	public boolean migrated;
+
+	public boolean getMigrated() {
+		return migrated;
+	}
+
+	public void setMigrated(boolean hasMigrated) {
+		this.migrated = hasMigrated;
+	}
 
 	private int id;
 
 	
 	public Client() throws RemoteException{
 		super();
+		this.migrated = false;
 	}
 
 	public void migrate(String url) throws RemoteException{
 		try {
+			System.out.println("Cambiando public object al de la url: " + url);
 			IPublicObject po = (IPublicObject)Naming.lookup(url);
-			this.objeto=po;
+			this.setObjeto(po);
+			migrated = true;
+			System.out.println("Se cambió la referencia");
 		} catch (NotBoundException e) {
 			e.printStackTrace();
 		} catch (MalformedURLException e) {
@@ -37,6 +50,14 @@ public class Client extends UnicastRemoteObject implements IClient{
 	public void setId(int id) throws RemoteException{
 		this.id = id;
 	}
+	
+	public IPublicObject getObjeto() throws RemoteException{
+		return objeto;
+	}
+
+	public void setObjeto(IPublicObject obj) throws RemoteException{
+		this.objeto = obj;
+	}
 
 	public static void main(String[] args) throws InterruptedException {
 		
@@ -44,18 +65,18 @@ public class Client extends UnicastRemoteObject implements IClient{
 			String ip = args[0];
 			System.setProperty("java.rmi.server.hostname", ip); 
 			System.out.println(Server.getURL(ip));
-			objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
+			IPublicObject objeto = (IPublicObject) Naming.lookup(Server.getURL(ip));
 			int id = objeto.createPlayer();
 			System.out.println("player id: " + id);
 			IClient c = (IClient) Naming.lookup(Server.getURL(ip) + "client/" + id);
 			c.setId(id);
+			c.setObjeto(objeto);
 			objeto.addClient(c);
 			
 			while(!objeto.isReady()){}
 			
 			while(objeto.getAllPlay()){
-				MainThreadClient m = new MainThreadClient(objeto, id);
-				
+				MainThreadClient m = new MainThreadClient(c);
 				m.start();
 				
 				while(m.isAlive()){}
@@ -97,5 +118,4 @@ public class Client extends UnicastRemoteObject implements IClient{
 		newClient.id = this.id;
 		return (IClient)newClient;
 	}
-
 }

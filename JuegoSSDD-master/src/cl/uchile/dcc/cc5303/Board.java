@@ -18,18 +18,11 @@ public class Board extends Canvas implements Remote {
     public Image img;
     public Graphics buffer;
     public int levels = 11;
-    IPublicObject publicObject;
 
-    public Board(int w, int h, IPublicObject publicObject){
+    public Board(int w, int h){
         this.width = w;
         this.height = h;
-        this.publicObject=publicObject;
         players=new ArrayList<>();
-        try {
-            bases=publicObject.getPublicBench();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
     }
 
     public void setBenches(Bench[] benches){
