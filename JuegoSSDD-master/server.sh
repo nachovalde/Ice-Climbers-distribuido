@@ -1,4 +1,5 @@
-﻿if [ -z "$1" ]
+﻿
+if [ -z "$1" ]
   then echo "Debe ingresar la IP del servidor donde conectarse."
   exit
 fi
@@ -13,7 +14,7 @@ if [ -z "$3" ]
 fi
 # Compilación de archivos java
 echo "Compilando programa."
-javac src/cl/uchile/dcc/cc5303/*.java
+javac -cp ".:jar/sigar.jar" src/cl/uchile/dcc/cc5303/*.java
 # Creación de directorio para archivos binarios de java
 mkdir -p bin/cl/uchile/dcc/cc5303/
 mv src/cl/uchile/dcc/cc5303/*.class bin/cl/uchile/dcc/cc5303/
@@ -27,9 +28,9 @@ rmiregistry &
 echo "Iniciando servidor"
 if [ -z "$4" ]; then
   echo "server inicial"
-  java -classpath jar/sigar.jar -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3
+  java -cp ".:../jar/sigar.jar" -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3
   exit
 else
-  java -classpath jar/sigar.jar -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3 $4
+  java -cp ".:../jar/sigar.jar" -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Server $1 $2 $3 $4
   exit
 fi
