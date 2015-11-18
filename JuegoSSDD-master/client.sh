@@ -12,4 +12,4 @@ mv src/cl/uchile/dcc/cc5303/*.class bin/cl/uchile/dcc/cc5303/
 # Correr el cliente
 echo "Iniciando Juego"
 cd bin
-java -cp ".:../jar/sigar.jar" -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Client $1
+java -Djava.rmi.server.hostname=$1 cl.uchile.dcc.cc5303.Client $1

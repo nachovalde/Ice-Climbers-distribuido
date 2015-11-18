@@ -16,14 +16,14 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public static String gameName = "IceClimbers";	
 	
-	private static IPublicObject po;
+	private IPublicObject po;
 	
 	public String ip;
 	
 	public String url;
 	
 	public ArrayList<IServer> servers;
-	public static ArrayList<IClient> clients;
+	public ArrayList<IClient> clients;
 	
 	public static String getURL(String ip){
 		return "rmi://"+ ip +":" + port + "/" + gameName;
@@ -65,7 +65,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 			System.out.println(s.getServers());
 			for (IClient c : s.clients){
 				System.setProperty("java.rmi.server.hostname", ip);
-				Naming.rebind(s.getURL(s.getIp())+"client/"+c.getId(),c);				
+				Naming.rebind(Server.getURL(s.getIp())+"client/"+c.getId(),c);				
 			}
 			System.setProperty("java.rmi.server.hostname", ip); 
 			Naming.rebind(s.url + "server", (IServer)s);
@@ -80,9 +80,14 @@ public class Server extends UnicastRemoteObject implements IServer{
 					public void run() {
 						while(true){
 							double load = CpuData.getCpuUsage();
-							if (load >0.70 && server.servers.size()>0){
-								server.migrate();
-								break;
+							try {
+								if (load >0.70 && server.servers.size()>0 && (server.po.getPlayers().size() == server.clients.size())){
+									server.migrate();
+									break;
+								}
+							} catch (RemoteException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
 							}
 							try {
 								Thread.sleep(100);
@@ -95,7 +100,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 
 			try {
 				System.setProperty("java.rmi.server.hostname", ip); 
-				Naming.rebind(s.getURL(s.ip), po);
+				Naming.rebind(Server.getURL(s.ip), s.po);
 				System.out.println("Objeto publicado en "+s.url);
 			} catch (RemoteException e) {
 				e.printStackTrace();
@@ -104,11 +109,12 @@ public class Server extends UnicastRemoteObject implements IServer{
 			}
 						
 			System.out.println("Esperando " + numberOfPlayers + " jugadores para empezar...");
-			while(po.getPlayers().size() != numberOfPlayers){
+			while(s.po.getPlayers().size() != numberOfPlayers){
 				try {
 	                Thread.sleep(1000/60);
 	            } catch (InterruptedException ex) {}
 			}
+			IPublicObject po = s.po;
 			po.setAllPlay(true);
 			while(po.getAllPlay()){
 				System.out.println("Iniciando Juego de SSDD...");
@@ -224,7 +230,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 		try{
 			this.po = po;
 			System.setProperty("java.rmi.server.hostname", ip); 
-			Naming.rebind(this.getURL(this.ip), this.po);
+			Naming.rebind(Server.getURL(this.ip), this.po);
 			return true;
 		}
 		catch (Exception e) {

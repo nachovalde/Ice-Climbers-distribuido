@@ -2,16 +2,16 @@ package cl.uchile.dcc.cc5303;
 
 import java.awt.*;
 import java.rmi.Remote;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by sebablasko on 9/11/15.
  */
 public class Board extends Canvas implements Remote {
 
-    public int width, height;
+	private static final long serialVersionUID = 1L;
+
+	public int width, height;
 
     public ArrayList<Player> players;
     public Bench[] bases;
