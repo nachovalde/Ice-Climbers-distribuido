@@ -62,4 +62,6 @@ public interface IPublicObject extends Remote{
 	String getName() throws RemoteException;
 	void setName(String name) throws RemoteException;
 
+	void setClients(ArrayList<IClient> clients) throws RemoteException;
+
 }

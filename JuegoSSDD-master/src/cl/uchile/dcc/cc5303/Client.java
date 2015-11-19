@@ -96,6 +96,8 @@ public class Client extends UnicastRemoteObject implements IClient{
 				objeto.sendResponse(id, res);
 				System.out.println("esperando otras respuestas");
 				objeto.waitResponses();
+				if(!objeto.getAllPlay())
+					break;
 				while(!objeto.isReady()){}
 			}
 		} catch (MalformedURLException e) {

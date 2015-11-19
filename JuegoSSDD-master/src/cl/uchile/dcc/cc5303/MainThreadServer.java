@@ -5,10 +5,12 @@ import java.rmi.RemoteException;
 public class MainThreadServer extends Thread {
 	
 	private IPublicObject po;
+	private IServer s;
 	private final static int UPDATE_RATE = 60;
 
-	public MainThreadServer(IPublicObject po) {
-		this.po = po;
+	public MainThreadServer(IServer s) throws RemoteException {
+		this.po = s.getPO();
+		this.s = s;
 	}
 	
 	@Override
@@ -20,7 +22,8 @@ public class MainThreadServer extends Thread {
 				for (Bench barra : po.getPublicBench()) {
 					for(Player p : po.getPlayers()){
 				        if (p.hit(barra)) {
-				            p.speed = 0.8;
+				            //p.speed = 0.8;
+							p.setSpeed(0.8);
 				        }else if (p.collide(barra)) {
 				            p.setSpeed(0.01);
 				            p.setStandUp(true);

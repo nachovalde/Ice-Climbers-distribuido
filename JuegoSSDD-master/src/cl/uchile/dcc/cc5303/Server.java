@@ -19,6 +19,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 	private IPublicObject po;
 	
 	public String ip;
+
+	boolean migrated;
 	
 	public String url;
 	
@@ -29,6 +31,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 		return "rmi://"+ ip +":" + port + "/" + gameName;
 	}
 	public Server(String ip, int lifes, int numberOfPlayers) throws RemoteException {
+		migrated = false;
 		this.ip = ip;
 		this.url = "rmi://"+ ip +":" + port + "/";
 		this.servers = new ArrayList<IServer>();
@@ -43,6 +46,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public Server(String ip, int lifes, int numberOfPlayers, String ipVecino) throws RemoteException, MalformedURLException, NotBoundException{
 		this(ip, lifes, numberOfPlayers);
+		migrated = false;
 		String urlVecino = "rmi://"+ ipVecino +":" + port + "/server";
 		IServer nb = (IServer)Naming.lookup(urlVecino); 
 		this.addServer(nb);
@@ -61,8 +65,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 				s = new Server(ip, lifes, numberOfPlayers);
 			else
 				s = new Server(ip, lifes, numberOfPlayers, args[3]);
-			System.out.println(s.url);
-			System.out.println(s.getServers());
 			for (IClient c : s.clients){
 				System.setProperty("java.rmi.server.hostname", ip);
 				Naming.rebind(Server.getURL(s.getIp())+"client/"+c.getId(),c);				
@@ -109,36 +111,77 @@ public class Server extends UnicastRemoteObject implements IServer{
 			}
 						
 			System.out.println("Esperando " + numberOfPlayers + " jugadores para empezar...");
-			while(s.po.getPlayers().size() != numberOfPlayers){
+			while(s.po.getPlayers().size() != numberOfPlayers) {
 				try {
-	                Thread.sleep(1000/60);
-	            } catch (InterruptedException ex) {}
+					Thread.sleep(1000 / 60);
+				} catch (InterruptedException ex) {
+				}
 			}
-			s.po.setAllPlay(true);
-			while(s.po.getAllPlay()){
+			s.setAllPlayPO(true);
+
+			while(s.getAllPlayPO()){
 				System.out.println("Iniciando Juego de SSDD...");
 				
-				s.po.init();
-				
-			    MainThreadServer m = new MainThreadServer(s.po);
+				//s.po.init();
+				s.initAll();
+
+			    MainThreadServer m = new MainThreadServer(s);
 			    m.start();
-			    s.po.setReady(true);
+
+			    s.setReadyPO(true);
 			    while(m.isAlive()){}
-			    s.po.setReady(false);
+			    s.setReadyPO(false);
+				System.out.println("Esperando Respuesta");
+			    s.waitResponsesPO();
 			    
-			    System.out.println("Esperando Respuesta");
-			    s.po.waitResponses();
-			    
-			    s.po.setAllPlay(s.po.responseAllPlayer());
+			    s.setAllPlayPO(s.responseAllPlayerPO());
 			}
-			s.po.setReady(true);
+			s.setReadyPO(true);
 		        
-		}else
-		{
+		}else {
 			System.out.println("Deben ir tres argumentos: IP, NumeroDeVidas y NumeroDeJugadores");
 		}
 	}
-	
+	public void initAll() throws RemoteException{
+		po.init();
+	}
+
+	public void setAllPlayPO(boolean t) throws RemoteException{
+		po.setAllPlay(t);
+	}
+	public void setReadyPO(boolean t) throws RemoteException{
+		po.setReady(t);
+	}
+	public boolean getAllPlayPO() throws RemoteException{
+		return po.getAllPlay();
+	}
+	public void waitResponsesPO() throws RemoteException{
+		po.waitResponses();
+	}
+	public boolean responseAllPlayerPO() throws RemoteException{
+		return po.responseAllPlayer();
+	}
+
+	@Override
+	public IPublicObject getPO() throws RemoteException {
+		return po;
+	}
+
+	@Override
+	public boolean getMigrated() throws RemoteException {
+		return migrated;
+	}
+
+	@Override
+	public void setMigrated(boolean b) throws RemoteException {
+		migrated = b;
+	}
+
+	@Override
+	public IPublicObject getObjeto() throws RemoteException {
+		return po;
+	}
+
 	public void migrate() {
 		IServer newServer = null;
 		try {
@@ -151,6 +194,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 			newServer.setPublicObjects(po.makeClone());
 			po.migrate(newServer, this.getIp());
 			po = new PublicObject(5, clients.size());
+			migrated = true;
 		} catch(RemoteException e) {
 			e.printStackTrace();
 		}
