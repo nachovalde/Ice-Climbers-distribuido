@@ -18,6 +18,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	private IPublicObject po;
 	
+	public boolean mainServer;
+	
 	public void setPublicObject(IPublicObject po) {
 		this.po = po;
 	}
@@ -74,10 +76,14 @@ public class Server extends UnicastRemoteObject implements IServer{
 			Server s = null;
 			int lifes = new Integer(args[1]);
 			int numberOfPlayers=new Integer(args[2]);
-			if (args.length==3)
+			if (args.length==3){
 				s = new Server(ip, lifes, numberOfPlayers);
-			else
+				s.mainServer = true;
+			}
+			else{
 				s = new Server(ip, lifes, numberOfPlayers, args[3]);
+				s.mainServer = false;
+			}
 			System.out.println(s.url);
 			System.out.println(s.getServers());
 			for (IClient c : s.clients){
@@ -98,9 +104,8 @@ public class Server extends UnicastRemoteObject implements IServer{
 						while(true){
 							double load = CpuData.getCpuUsage();
 							try {
-								if (load >0.70 && server.servers.size()>0 && (server.po.getPlayers().size() == server.clients.size())){
+								if (server.mainServer && load >0.70 && server.servers.size()>0 && (server.po.getPlayers().size() == server.clients.size())){
 									server.migrate();
-									break;
 								}
 							} catch (RemoteException e1) {
 								// TODO Auto-generated catch block
@@ -167,8 +172,9 @@ public class Server extends UnicastRemoteObject implements IServer{
 			System.out.println("migrando a server: " + newServer.getIp());
 			newServer.setPublicObjects(po.makeClone());
 			newServer.setMigrated(true);
+			newServer.setMainServer(true);
+			this.mainServer = false;
 			po.migrate(newServer, this.getIp());
-			po = new PublicObject(5, clients.size());
 		} catch(RemoteException e) {
 			e.printStackTrace();
 		}
@@ -255,6 +261,11 @@ public class Server extends UnicastRemoteObject implements IServer{
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public void setMainServer(boolean b) throws RemoteException {
+		this.mainServer = b;		
 	}
 	
 }
