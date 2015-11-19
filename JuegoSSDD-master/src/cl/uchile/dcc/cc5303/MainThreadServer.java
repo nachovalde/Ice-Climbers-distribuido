@@ -5,15 +5,25 @@ import java.rmi.RemoteException;
 public class MainThreadServer extends Thread {
 	
 	private IPublicObject po;
+	private Server server;
 	private final static int UPDATE_RATE = 60;
 
-	public MainThreadServer(IPublicObject po) {
-		this.po = po;
+	public MainThreadServer(Server s) {
+		this.server = s;
+		this.po = s.getPublicObject();
 	}
 	
 	@Override
 	public void run(){
 		while(true){
+			//update public object
+			if (server.getMigrated()){
+				server.setMigrated(false);
+				IPublicObject obj = server.getPublicObject();
+				this.migrate(obj);
+				System.out.println("He migrado en el server");
+			}
+			
 			//update barras
             boolean levelsDown = false;
             try {
@@ -72,6 +82,10 @@ public class MainThreadServer extends Thread {
         } catch (InterruptedException ex) {
 
         }
+	}
+
+	private void migrate(IPublicObject obj) {
+		this.po = obj;		
 	}
 
 }

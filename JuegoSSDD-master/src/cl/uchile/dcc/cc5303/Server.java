@@ -18,10 +18,26 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	private IPublicObject po;
 	
+	public void setPublicObject(IPublicObject po) {
+		this.po = po;
+	}
+	
+	public IPublicObject getPublicObject() {
+		return this.po;
+	}
+	
 	public String ip;
 	
 	public String url;
 	
+	public boolean migrated;
+	
+	public boolean getMigrated() {
+		return migrated;
+	}
+	public void setMigrated(boolean migrated) {
+		this.migrated = migrated;
+	}
 	public ArrayList<IServer> servers;
 	public ArrayList<IClient> clients;
 	
@@ -38,6 +54,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 			c.setId(i);
 			clients.add(c);
 		}
+		this.migrated = false;
 		this.po = new PublicObject(lifes, numberOfPlayers);
 	}
 	
@@ -120,7 +137,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 				
 				s.po.init();
 				
-			    MainThreadServer m = new MainThreadServer(s.po);
+			    MainThreadServer m = new MainThreadServer(s);
 			    m.start();
 			    s.po.setReady(true);
 			    while(m.isAlive()){}
@@ -149,6 +166,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 		try {
 			System.out.println("migrando a server: " + newServer.getIp());
 			newServer.setPublicObjects(po.makeClone());
+			newServer.setMigrated(true);
 			po.migrate(newServer, this.getIp());
 			po = new PublicObject(5, clients.size());
 		} catch(RemoteException e) {
@@ -238,4 +256,5 @@ public class Server extends UnicastRemoteObject implements IServer{
 		}
 		return false;
 	}
+	
 }

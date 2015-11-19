@@ -15,4 +15,5 @@ public interface IServer extends Remote {
 	ArrayList<IServer> getServers() throws RemoteException;
 	public boolean addServer(IServer newServer) throws RemoteException;
 	public boolean setPublicObjects(IPublicObject po) throws RemoteException;
+	public void setMigrated(boolean b);
 }
