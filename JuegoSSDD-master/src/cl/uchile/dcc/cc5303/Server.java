@@ -20,7 +20,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public boolean mainServer;
 	
-	public synchronized void setPublicObject(IPublicObject po) {
+	public void setPublicObject(IPublicObject po) {
 		this.po = po;
 	}
 	
