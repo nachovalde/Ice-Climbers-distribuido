@@ -28,4 +28,6 @@ public interface IServer extends Remote {
 	boolean getMigrated() throws RemoteException;
 
 	void setMigrated(boolean b) throws RemoteException;
+	public void setClients(ArrayList<IClient> clients) throws RemoteException;
+	public void setClient(IClient client, int ind) throws RemoteException;
 }

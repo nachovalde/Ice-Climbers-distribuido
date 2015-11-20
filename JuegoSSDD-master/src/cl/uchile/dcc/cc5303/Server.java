@@ -20,7 +20,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public boolean mainServer;
 	
-	public void setPublicObject(IPublicObject po) {
+	public synchronized void setPublicObject(IPublicObject po) {
 		this.po = po;
 	}
 	
@@ -32,11 +32,36 @@ public class Server extends UnicastRemoteObject implements IServer{
 	
 	public String url;
 	
+	public int lifes;
+	
 	public boolean migrated;
 	
 	public ArrayList<IServer> servers;
 	public ArrayList<IClient> clients;
 	
+	@Override
+	public void setClients(ArrayList<IClient> clients) throws RemoteException{
+		for (IClient c : clients){
+			setClient(c, c.getId());
+		}
+	}
+	
+	@Override
+	public void setClient(IClient client, int ind) throws RemoteException {
+		try{
+			clients.set(ind, client);
+		} catch (IndexOutOfBoundsException e){
+			clients.add(client);
+		}
+		try {
+			System.setProperty("java.rmi.server.hostname", ip);
+			Naming.rebind(Server.getURL(this.getIp())+"client/"+ind,client);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
 	public static String getURL(String ip){
 		return "rmi://"+ ip +":" + port + "/" + gameName;
 	}
@@ -44,13 +69,16 @@ public class Server extends UnicastRemoteObject implements IServer{
 		migrated = false;
 		this.ip = ip;
 		this.url = "rmi://"+ ip +":" + port + "/";
+		this.lifes = lifes;
 		this.servers = new ArrayList<IServer>();
-		this.clients= new ArrayList<IClient>();
+		this.clients = new ArrayList<IClient>();
+		ArrayList<IClient> clientes = new ArrayList<IClient>();
 		for (int i = 0; i < numberOfPlayers; i++) {
-			Client c=new Client();
+			IClient c=new Client();
 			c.setId(i);
-			clients.add(c);
+			clientes.add(c);
 		}
+		setClients(clientes);
 		this.migrated = false;
 		this.po = new PublicObject(lifes, numberOfPlayers);
 	}
@@ -79,10 +107,6 @@ public class Server extends UnicastRemoteObject implements IServer{
 			else{
 				s = new Server(ip, lifes, numberOfPlayers, args[3]);
 				s.mainServer = false;
-			}
-			for (IClient c : s.clients){
-				System.setProperty("java.rmi.server.hostname", ip);
-				Naming.rebind(Server.getURL(s.getIp())+"client/"+c.getId(),c);				
 			}
 			System.setProperty("java.rmi.server.hostname", ip); 
 			Naming.rebind(s.url + "server", (IServer)s);
@@ -205,7 +229,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 			newServer.setMainServer(true);
 			this.mainServer = false;
 			po.migrate(newServer, this.getIp());
-			po = new PublicObject(5, clients.size());
+			po = new PublicObject(this.lifes, clients.size());
 		} catch(RemoteException e) {
 			e.printStackTrace();
 		}
@@ -298,5 +322,7 @@ public class Server extends UnicastRemoteObject implements IServer{
 	public void setMainServer(boolean b) throws RemoteException {
 		this.mainServer = b;		
 	}
+
+	
 	
 }

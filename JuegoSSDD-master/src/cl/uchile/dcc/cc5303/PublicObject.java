@@ -289,10 +289,13 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
 	@Override
 	public void migrate(IServer newServer, String ipOld) throws RemoteException {
+		ArrayList<IClient> clientes = new ArrayList<IClient>();
 		for(IClient client:clients){
 			try {
 				IClient client2 = (IClient) Naming.lookup(Server.getURL(ipOld)+"client/"+client.getId());
+				newServer.setClient(client2, client2.getId() );
 				client2.migrate(Server.getURL(newServer.getIp()));
+				clientes.add(client2);
 			} catch (NotBoundException e) {
 				e.printStackTrace();
 			} catch (MalformedURLException e) {
