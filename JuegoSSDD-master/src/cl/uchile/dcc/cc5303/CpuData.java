@@ -10,8 +10,8 @@ public class CpuData {
 		try {
 			CpuPerc perc = sigar.getCpuPerc();
 			load=perc.getCombined();
-			if(load>0.70){
-				System.out.println("Carga mayor que 70%");
+			if(load>0.75){
+				System.out.println("Carga mayor que 75%");
 			}
 		} catch (SigarException e1) {
 			// TODO Auto-generated catch block

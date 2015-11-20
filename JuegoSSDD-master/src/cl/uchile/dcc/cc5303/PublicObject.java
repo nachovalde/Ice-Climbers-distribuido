@@ -24,8 +24,8 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	private int lastPlayer = 0; 
     private int numberOfPlayers;
     private final static int WIDTH = 800, HEIGHT = 600;
-    
-    private ArrayList<IClient> clients;
+
+	private ArrayList<IClient> clients;
     
     private boolean isReady;
     private boolean AllPlay;
@@ -35,7 +35,10 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     private int countResponse;
     
     private int lifes;
+	private static int numberOfLifes;
     private int levels = 11;
+
+	private int[] storedLevels={0,0,1,1,2,2,3,3,4,4,5,6,7,8,9,10};
     
     private Bench[] benches = {
             new Bench(200, 200, 0),
@@ -69,6 +72,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
         setPlayers(new ArrayList<Player>());
         this.numberOfPlayers = numberOfPlayers;
         this.lifes=lifes;
+		numberOfLifes=lifes;
         setReady(false);
         responses = new boolean[numberOfPlayers];
         countResponse = 0;
@@ -79,6 +83,10 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
     public ArrayList<Player> getPublicPlayers() throws RemoteException{
         return getPlayers();
     }
+
+	public void setClients(ArrayList<IClient> clients) throws RemoteException{
+		this.clients = clients;
+	}
 
     public void setPublicPlayers(ArrayList<Player> publicPlayers) throws RemoteException{
         this.setPlayers(publicPlayers);
@@ -100,7 +108,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	private void initPlayer() throws RemoteException{
 		Color color = colors[lastPlayer];
         int position = positions[lastPlayer];
-        Player p = new Player(position, 550, lifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
+        Player p = new Player(position, 550, numberOfLifes, KeyEvent.VK_UP, KeyEvent.VK_RIGHT, KeyEvent.VK_LEFT, color);
         lastPlayer++;
         p.setId(players.size());
         if (players.size()<numberOfPlayers){
@@ -214,8 +222,14 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 
 	@Override
 	public void init() throws RemoteException {
-		lastPlayer = 0;
+		//lastPlayer = 0;
+		Bench[] newBenchs = new Bench[benches.length];
+		for (int i = 0; i < benches.length; i++) {
+			newBenchs[i]=new Bench(benches[i].posX,benches[i].w,storedLevels[i]);
+		}
+		setLastPlayer(0);
 		setPlayers(new ArrayList<Player>());
+		setBenches(newBenchs);
 		for (int i = 0; i < numberOfPlayers; i++) {
 			initPlayer();
 		}
@@ -235,7 +249,7 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 	public void waitResponses() throws RemoteException{
 		while(countResponse < numberOfPlayers){
 			try {
-				Thread.sleep(500);
+				Thread.sleep(300);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -305,14 +319,17 @@ public class PublicObject extends UnicastRemoteObject implements IPublicObject {
 		}
 		newPO.setBenches(benches);
 
-	    newPO.isReady = this.isReady;
-	    newPO.AllPlay = this.AllPlay;
+	    //newPO.isReady = this.isReady;
+		newPO.setReady(this.isReady);
+		newPO.setAllPlay(this.AllPlay);
+	    //newPO.AllPlay = this.AllPlay;
 	    /* Clonar Clientes (?)
 		ArrayList<IClient> oldClients = new ArrayList<IClient>();
 		for(IClient client:clients){
 			oldClients.add(client.makeClone());
 		}*/
-		newPO.clients = this.clients ;
+		newPO.setClients(this.clients);
+		//newPO.clients = this.clients ;
 	    
 		return (IPublicObject)newPO;
 	}

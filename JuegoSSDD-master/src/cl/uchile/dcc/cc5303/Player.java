@@ -59,10 +59,6 @@ public class Player implements Serializable, Comparable<Player>{
         g.fillRect(this.posX, this.posY, this.w, this.h);
     }
 
-    @Override
-    public String toString(){
-        return "player "+ id +": Score " + score + " pos: ( " + posX + ", "+ posY + " )";
-    }
 
     public boolean collide(Bench b){
         return Math.abs(bottom() - b.top()) < 5 && right() <= b.right() && left() >= b.left();
@@ -188,4 +184,21 @@ public class Player implements Serializable, Comparable<Player>{
 	public void setStandUp(boolean b) {
 		standUp = b;
 	}
+
+    public int getVida() {
+        return vida;
+    }
+
+    public void setVida(int vida) {
+        this.vida = vida;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    @Override
+    public String toString(){
+        return "PLAYER ID:"+id+" VIDAS: "+vida;
+    }
 }

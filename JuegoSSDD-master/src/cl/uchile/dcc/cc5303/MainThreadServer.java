@@ -5,23 +5,29 @@ import java.rmi.RemoteException;
 public class MainThreadServer extends Thread {
 	
 	private IPublicObject po;
-	private Server server;
+	private IServer server;
+	
 	private final static int UPDATE_RATE = 60;
-
-	public MainThreadServer(Server s) {
+	
+	public MainThreadServer(IServer s) throws RemoteException {
+		this.po = s.getPO();
 		this.server = s;
-		this.po = s.getPublicObject();
 	}
 	
 	@Override
 	public void run(){
 		while(true){
 			//update public object
-			if (server.getMigrated()){
-				server.setMigrated(false);
-				IPublicObject obj = server.getPublicObject();
-				this.migrate(obj);
-				System.out.println("He migrado en el server");
+			try {
+				if (server.getMigrated()){
+					server.setMigrated(false);
+					IPublicObject obj = server.getPO();
+					this.migrate(obj);
+					System.out.println("He migrado en el server");
+				}
+			} catch (RemoteException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			
 			//update barras
@@ -30,7 +36,8 @@ public class MainThreadServer extends Thread {
 				for (Bench barra : po.getPublicBench()) {
 					for(Player p : po.getPlayers()){
 				        if (p.hit(barra)) {
-				            p.speed = 0.8;
+				            //p.speed = 0.8;
+							p.setSpeed(0.8);
 				        }else if (p.collide(barra)) {
 				            p.setSpeed(0.01);
 				            p.setStandUp(true);

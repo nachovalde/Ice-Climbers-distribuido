@@ -84,7 +84,7 @@ public class MainThreadClient extends Thread implements Serializable{
 					tablero.setBenches(obj.getPublicBench());
 					tablero.setPlayers(obj.getPlayers());
 					System.out.println("He migrado");
-					System.out.println("player: " + p.getId() + " tiene velocidad: " + p.speed);
+					System.out.println("player: " + p.getId() + " tiene velocidad: " + p.getSpeed());
 				}
 			} catch (RemoteException e1) {
 				// TODO Auto-generated catch block
@@ -135,7 +135,8 @@ public class MainThreadClient extends Thread implements Serializable{
 	        if(p.stillLife()){
 	        	p.addScore(5*(fin-inicio)+10);
 				System.out.println("Ganaste con puntaje = " + p.getScore());
-				p.vida=0;
+                p.setVida(0);
+				//p.vida=0;
 				Thread.sleep(1000/ UPDATE_RATE);
 	        }
 			else{
